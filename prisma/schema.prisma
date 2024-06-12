@@ -29,16 +29,6 @@ model IngredientsinDishes {
     @@id([dishId, ingredientId])
 }
 
-enum Day {
-    MONDAY
-    TUESDAY
-    WEDNESDAY
-    THURSDAY
-    FRIDAY
-    SATURDAY
-    SUNDAY
-}
-
 enum Meal {
     BREAKFAST
     MIDMORNING
@@ -47,17 +37,19 @@ enum Meal {
     DINNER
 }
 
+model plannedDay {
+    id Int @id @default(autoincrement())
+    day DateTime @db.Date @unique
+ 
+    plannedMeal plannedMeal[]
+}
+
 model plannedMeal {
     id Int @id @default(autoincrement())
     meal Meal
     dish Dish @relation(fields: [dishId], references: [id])
     dishId Int
-    plannedWeek plannedWeek[]
-}
 
-model plannedWeek {
-    id Int @id @default(autoincrement())
-    weekNumber Int
-    plannedMeal plannedMeal @relation(fields: [plannedMealId], references: [id]) 
-    plannedMealId Int
+    plannedDay plannedDay @relation(fields: [plannedDayId], references: [id])
+    plannedDayId Int
 }

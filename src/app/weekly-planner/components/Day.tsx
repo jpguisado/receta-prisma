@@ -4,10 +4,10 @@ export const DayComponent = ({ day }: { day: string }) => {
     return (
         <>
             {/* Day component */}
-            <div className="border-[1px] h-28 rounded-md flex justify-between">
+            <div className="border-[1px] mb-3 h-20 rounded-md flex justify-between">
                 <div className="font-black border-r-[1px] w-10 flex items-center justify-center">{day}</div>
 
-                <div className="flex overflow-x-scroll gap-1">
+                <div className="flex w-full justify-between overflow-x-scroll gap-1">
                     <Meal meal="breakfast" />
                     <Meal meal="midmorning" />
                     <Meal meal="lunch" />

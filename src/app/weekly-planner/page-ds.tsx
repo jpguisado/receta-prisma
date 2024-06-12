@@ -1,39 +1,35 @@
-'use client';
+"use client";
 
-import { useState } from "react";
-import { Button } from "~/components/ui/button";
-import { Select, SelectContent, SelectTrigger, SelectValue } from "~/components/ui/select";
-import type { Day } from "~/models/types/day.td";
-import { BreakfastIcon } from "./components/Icons/BreakfastIcon";
-import { DinnerIcon } from "./components/Icons/DinnerIcon";
-import { LunchIcon } from "./components/Icons/LunchIcon";
-import { MidmorningIcon } from "./components/Icons/MidmorningIcon";
-import { SnackIcon } from "./components/Icons/SnackIcon";
-import type { Meal } from "~/models/types/meal.td";
+import { useState } from "react"
+import { type z } from "zod"
+import { Button } from "~/components/ui/button"
+import { Select, SelectContent, SelectTrigger, SelectValue } from "~/components/ui/select"
+
 import { DayComponent } from "./components/Day";
-import { useQuery } from "@tanstack/react-query";
-
+import type { Day } from "~/models/types/day.td";
+import type { Dish } from "~/models/types/dish.td";
+import type { Meal } from "~/models/types/meal.td";
+import type { plannedWeek } from "~/models/types/plannedWeek.td";
+import { BreakfastIcon } from "./components/Icons/BreakfastIcon";
+import { MidmorningIcon } from "./components/Icons/MidmorningIcon";
+import { LunchIcon } from "./components/Icons/LunchIcon";
+import { SnackIcon } from "./components/Icons/SnackIcon";
+import { DinnerIcon } from "./components/Icons/DinnerIcon";
 
 export default function WeeklyPlanner() {
 
     const [day, setDay] = useState<Day>();
     const [meal, setMeal] = useState<Meal>();
+    const [dish, setDish] = useState<Dish>();
+    const [plan, setPlanning] = useState<plannedWeek>([])
 
-    async function fetchPlannedDays() {
-        const response = await fetch("/api/plannedDay/read");
-        //return await response.json();
-        
-      }
-
-    const {data, isLoading} = useQuery({ queryKey: ['days'], queryFn: fetchPlannedDays })
-
-    console.log(data)
+    
 
     return (
-        <div className="h-full overflow-hidden">
-            <div className="h-[45%] gap-3 flex flex-col">
-                <div className="text-2xl font-medium">Semana 56</div>
-                <div className="flex w-full justify-around">
+        <div className="gap-4 flex flex-col h-full">
+            <div className="text-xl">Semana 1</div>
+
+            <div className="flex justify-around">
                 <Button onClick={() => setDay({ name: 'MONDAY', order: 0 })} className={`flex border hover:bg-slate-300 transition-colors duration-200 rounded-full h-8 w-8 justify-center items-center ${day?.name === 'MONDAY' ? 'bg-slate-400' : ''}`}>L</Button>
                 <Button onClick={() => setDay({ name: 'TUESDAY', order: 1 })} className={`flex border hover:bg-slate-300 transition-colors duration-200 rounded-full h-8 w-8 justify-center items-center ${day?.name === 'TUESDAY' ? 'bg-slate-400' : ''}`}>M</Button>
                 <Button onClick={() => setDay({ name: 'WEDNESDAY', order: 2 })} className={`flex border hover:bg-slate-300 transition-colors duration-200 rounded-full h-8 w-8 justify-center items-center ${day?.name === 'WEDNESDAY' ? 'bg-slate-400' : ''}`}>X</Button>
@@ -41,8 +37,9 @@ export default function WeeklyPlanner() {
                 <Button onClick={() => setDay({ name: 'FRIDAY', order: 4 })} className={`flex border hover:bg-slate-300 transition-colors duration-200 rounded-full h-8 w-8 justify-center items-center ${day?.name === 'FRIDAY' ? 'bg-slate-400' : ''}`}>V</Button>
                 <Button onClick={() => setDay({ name: 'SATURDAY', order: 5 })} className={`flex border hover:bg-slate-300 transition-colors duration-200 rounded-full h-8 w-8 justify-center items-center ${day?.name === 'SATURDAY' ? 'bg-slate-400' : ''}`}>S</Button>
                 <Button onClick={() => setDay({ name: 'SUNDAY', order: 6 })} className={`flex border hover:bg-slate-300 transition-colors duration-200 rounded-full h-8 w-8 justify-center items-center ${day?.name === 'SUNDAY' ? 'bg-slate-400' : ''}`}>D</Button>
-                </div>
-                <div className="flex w-full justify-around">
+            </div>
+
+            <div className="flex gap-3 w-full justify-between">
                 <div onClick={() => setMeal({ name: 'BREAKFAST', order: 0 })} className={`p-2 border-[1px] ${meal?.name === 'BREAKFAST' ? 'bg-slate-200' : ''}`}>
                     <BreakfastIcon />
                 </div>
@@ -58,25 +55,28 @@ export default function WeeklyPlanner() {
                 <div onClick={() => setMeal({ name: 'BREAKFAST', order: 0 })} className={`p-2 border-[1px] ${meal?.name === 'DINNER' ? 'bg-slate-200' : ''}`}>
                     <DinnerIcon />
                 </div>
-                </div>
-                <Select>
-                    <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Selecciona el plato" />
-                    </SelectTrigger>
-                    <SelectContent>
-                    </SelectContent>
-                </Select>
-                <Button className="w-full">Añadir</Button>
             </div>
-            <div className="h-[55%] overflow-scroll">
-                <DayComponent day="L" />
-                <DayComponent day="M" />
-                <DayComponent day="X" />
-                <DayComponent day="J" />
-                <DayComponent day="V" />
-                <DayComponent day="S" />
-                <DayComponent day="D" />             
+
+            <Select>
+                <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Selecciona el plato" />
+                </SelectTrigger>
+                <SelectContent>
+                </SelectContent>
+            </Select>
+
+            <Button>Añadir</Button>
+
+            <div className="flex flex-col overflow-y-scroll h-full gap-1">
+                <DayComponent day="L"></DayComponent>
+                <DayComponent day="M"></DayComponent>
+                <DayComponent day="X"></DayComponent>
+                <DayComponent day="J"></DayComponent>
+                <DayComponent day="V"></DayComponent>
+                <DayComponent day="S"></DayComponent>
+                <DayComponent day="D"></DayComponent>
             </div>
+
         </div>
     )
 }

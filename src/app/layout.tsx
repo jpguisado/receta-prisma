@@ -24,10 +24,10 @@ export default function RootLayout({
     <Providers>
       <html lang="en">
         <body className={`h-screen flex flex-col justify-between font-sans ${inter.variable}`}>
-          <div className="h-full p-6">
+          <div className="h-[90%] p-6">
             {children}
           </div>
-          <footer className='h-24 flex items-center text-center bg-slate-50'>
+          <footer className='h-[10%] flex items-center text-center bg-slate-50'>
             <div className='w-full'>
               <div className='justify-center flex'>
                 <div className='justify-center flex w-full'>

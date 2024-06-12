@@ -4,7 +4,9 @@ import { db } from "~/server/db";
 
 export async function GET() {
     try {
-        const data = await db.ingredient.findMany({})
+        const data = await db.plannedWeek.findMany({
+            
+        })
         return NextResponse.json(data)
     } catch (error) {
         if (error instanceof z.ZodError) {

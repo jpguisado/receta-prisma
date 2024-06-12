@@ -31,7 +31,7 @@ export const Meal = ({ meal }: { meal: string }) => {
     }
 
     return (
-        <div className="flex flex-col justify-center items-center text-center text-sm border-2 min-w-20 max-w-20 text-wrap">
+        <div className="flex flex-col justify-center items-center text-center text-sm min-w-20 max-w-20 text-wrap">
             <div className="overflow-hidden items-center w-full flex justify-center h-1/2">
                 {ShowIconMeal({ meal: meal })}
             </div>
