@@ -6,26 +6,26 @@ import { SnackIcon } from "./Icons/SnackIcon"
 
 // TODO: Hide scrollbar
 
-export const Meal = ({ meal }: { meal: string }) => {
+export const MealComponent = ({ meal, dish }: { meal: string, dish: string }) => {
 
     /**
      * Returns an icon based on meal name
      * @returns 
      */
     const ShowIconMeal = ({ meal }: { meal: string }) => {
-        if (meal === 'breakfast') {
+        if (meal === 'BREAKFAST') {
             return <BreakfastIcon />
         }
-        if (meal === 'midmorning') {
+        if (meal === 'MIDMORNING') {
             return <MidmorningIcon />
         }
-        if (meal === 'lunch') {
+        if (meal === 'LUNCH') {
             return <LunchIcon />
         }
-        if (meal === 'snack') {
+        if (meal === 'SNACK') {
             return <SnackIcon />
         }
-        if (meal === 'dinner') {
+        if (meal === 'DINNER') {
             return <DinnerIcon />
         }
     }
@@ -36,7 +36,7 @@ export const Meal = ({ meal }: { meal: string }) => {
                 {ShowIconMeal({ meal: meal })}
             </div>
             <div className="overflow-hidden flex items-start h-1/2">
-                <span className="">{meal}</span>
+                <span className="">{dish}</span>
             </div>
         </div>
     )

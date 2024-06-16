@@ -1,18 +1,24 @@
-import { Meal } from "./Meal"
+import type { Dish } from "~/models/types/dish.td"
+import type { Meal } from "~/models/types/meal.td"
+import { MealComponent } from "./Meal"
 
-export const DayComponent = ({ day }: { day: string }) => {
+export const DayComponent = ({ day, plannedMeal}: { day: Date, plannedMeal: [{id: string, meal: Meal, dish: Dish}] }) => {
+
+    function getDayOfTheWeek (): string {
+        const dayNumber: number = new Date (day).getDay()
+        const daysOfTheWeek: string[] = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'];
+        return daysOfTheWeek[dayNumber]!
+    }
+
     return (
         <>
             {/* Day component */}
             <div className="border-[1px] mb-3 h-20 rounded-md flex justify-between">
-                <div className="font-black border-r-[1px] w-10 flex items-center justify-center">{day}</div>
-
+                <div className="font-black border-r-[1px] w-10 flex items-center justify-center">{getDayOfTheWeek().charAt(0)}</div>
                 <div className="flex w-full justify-between overflow-x-scroll gap-1">
-                    <Meal meal="breakfast" />
-                    <Meal meal="midmorning" />
-                    <Meal meal="lunch" />
-                    <Meal meal="snack" />
-                    <Meal meal="dinner" />
+                    {plannedMeal.flatMap((meal) => {
+                        return <MealComponent key={meal.id} dish={meal.dish.name} meal={meal.meal} />
+                    })}
                 </div>
 
                 <div className="font-black border-l-[1px] w-10 flex items-center justify-center">

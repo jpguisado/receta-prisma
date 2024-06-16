@@ -4,7 +4,8 @@ import { db } from "~/server/db";
 
 export async function GET() {
     try {
-        const data = await db.dish.findMany()
+        const data = await db.dish.findMany({
+        })
         return NextResponse.json(data)
     } catch (error) {
         if (error instanceof z.ZodError) {

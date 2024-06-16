@@ -1,8 +1,13 @@
 import { z } from "zod";
 import { mealSchema } from "../schemas/mealsSchema";
-import { daySchema } from "../schemas/daySchema";
+import { dishSchema } from "./dishSchema";
 
-export const mealsOfDaySchema = z.object({
-    weekDay: daySchema,
-    mealList: mealSchema.array(),
-})
+export const mealsOfWeekSchema = z.object({
+    id: z.number(),
+    day: z.date(),
+    plannedMeal: z.object({
+        id: z.number(),
+        meal: mealSchema,
+        dish: dishSchema,
+    }).array(),
+}).array();
