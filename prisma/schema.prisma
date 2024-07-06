@@ -37,13 +37,6 @@ enum Meal {
     DINNER
 }
 
-model plannedDay {
-    id Int @id @default(autoincrement())
-    day DateTime @db.Date @unique
- 
-    plannedMeal plannedMeal[]
-}
-
 model plannedMeal {
     id Int @id @default(autoincrement())
     meal Meal
@@ -52,4 +45,10 @@ model plannedMeal {
 
     plannedDay plannedDay @relation(fields: [plannedDayId], references: [id])
     plannedDayId Int
+}
+
+model plannedDay {
+    id Int @id @default(autoincrement())
+    day DateTime @db.Date @unique
+    plannedMeal plannedMeal[]
 }

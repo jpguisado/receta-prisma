@@ -2,7 +2,7 @@ import type { Dish } from "~/models/types/dish.td"
 import type { Meal } from "~/models/types/meal.td"
 import { MealComponent } from "./Meal"
 
-export const DayComponent = ({ day, plannedMeal}: { day: Date, plannedMeal: [{id: string, meal: Meal, dish: Dish}] }) => {
+export const DayComponent = ({ day, plannedMeal}: { day: Date, plannedMeal: {id: number, meal: Meal, dish: Dish}[] }) => {
 
     function getDayOfTheWeek (): string {
         const dayNumber: number = new Date (day).getDay()

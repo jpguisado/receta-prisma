@@ -1,3 +1,3 @@
-import { mealsOfDaySchema } from "./mealsOfDaySchema";
+import { mealsOfWeekSchema } from "./mealsOfDaySchema";
 
-export const plannedWeekSchema = mealsOfDaySchema.array();
+export const plannedWeekSchema = mealsOfWeekSchema.array();
