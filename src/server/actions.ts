@@ -1,25 +1,25 @@
+import { plannedMeal } from "~/models/schemas/plannedMealSchema";
 import { db } from "./db";
 import { plannedDaySchema } from "~/models/schemas/plannedDaySchema";
+import { comidaPlanificadaSchema } from "~/models/schemas/comidaPlanificada";
 
-const createPlannedDay = plannedDaySchema;
+const crearComidaPlanificada = comidaPlanificadaSchema;
 
 export async function createMealsForWeek(formData: FormData) {
     'use server';
     
-    console.log('Log: ', formData)
+    console.log('Log: ', Object.fromEntries(formData.entries()))
 
     // Falla el parseo
-    // const { id, day, plannedMeal } = createPlannedDay.parse(Object.fromEntries(formData.entries()))
+    // const { meal, dish, date } = crearComidaPlanificada.parse(Object.fromEntries(formData.entries()))
 
-    await db.plannedDay.create({
-        data: {
-            day: new Date(),
-            plannedMeal: {
-                create: {
-                    dishId: 1,
-                    meal: 'BREAKFAST'
-                }
-            }
-        }
-    })
+    // await db.comidaPlanificada.create({
+    //     data: {
+    //         date: date,
+    //         meal: meal,
+    //         dish: {
+    //             connect: dish
+    //         }
+    //     }
+    // })
 }

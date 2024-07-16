@@ -11,11 +11,25 @@ export async function fetchDishList(): Promise<Dish[]> {
     return dishes;
 }
 
+export async function fetchPlannedMealsOfWeek() {
+    return 
+}
+
 export async function fetchPlannedDays(): Promise<mealsOfWeek> {
     const plannedDays = await db.plannedDay.findMany({
         include:
-            { plannedMeal: { include: { dish: true } } }
+            { plannedMeal: { include: { dish: true } } },
+        where: {
+            plannedMeal: {
+                every: {
+                    plannedDay: {
+                        day: {
+                            equals: new Date()
+                        }
+                    }
+                }
+            }
+        }
     })
-    console.log(plannedDays)
     return plannedDays;
 }
