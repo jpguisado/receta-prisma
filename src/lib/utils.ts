@@ -18,6 +18,24 @@ export const getWeekNumber = (dateToCompare: Date) => {
 }
 
 /**
+ * Returns the dates of a week starting on a date
+ * @param startingDate 
+ * @returns 
+ */
+export const getWeekDates = (startingDate: Date) => {
+  const startingDay = startingDate.getDay();
+  const startingDayInMilis = startingDate.getTime();
+  const week = [];
+  for (let index = 0; index < startingDay; index++) {
+    week.push(new Date(startingDayInMilis - 86400000 * (startingDay - index - 1)));
+  }
+  for (let index = startingDay; index < 7; index++) {
+    week.push(new Date(startingDayInMilis + (86400000 * (index - startingDay + 1))));
+  }
+  return week;
+}
+
+/**
  * Returns the date of the first day of the week using any date of the evaluated week 
  * @param evaluatedDate any date of the week
  * @returns the date of the first day of the week assuming that's monday 

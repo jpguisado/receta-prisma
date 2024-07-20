@@ -8,16 +8,16 @@ export default function UpdatePlannedDates({ operation }: { operation: string })
     const pathname = usePathname();
     const { replace } = useRouter();
 
-    /**
-     * Adds or removes seven days to a given date (current or passed by param)
-     * @param operation add | remove seven days to current date
-     * @returns updated date in miliseconds
-     */
-    const weekOperation = (operation: string) => {
-        const dateToBeUpdated = searchParams.get('dateInMilis') === null ? new Date().getTime().toString() : searchParams.get('dateInMilis')!;
-        const timeInMilis = operation === 'add' ? parseInt(dateToBeUpdated, 10) + (86400000 * 7) : parseInt(dateToBeUpdated, 10) - (86400000 * 7);
-        return new Date(timeInMilis).getTime();
-    }
+    // /**
+    //  * Adds or removes seven days to a given date (current or passed by param)
+    //  * @param operation add | remove seven days to current date
+    //  * @returns updated date in miliseconds
+    //  */
+    // const weekOperation = (operation: string) => {
+    //     const dateToBeUpdated = searchParams.get('dateInMilis') === null ? new Date().getTime().toString() : searchParams.get('dateInMilis')!;
+    //     const timeInMilis = operation === 'add' ? parseInt(dateToBeUpdated, 10) + (86400000 * 7) : parseInt(dateToBeUpdated, 10) - (86400000 * 7);
+    //     return new Date(timeInMilis).getTime();
+    // }
 
     /**
      * Sets query-params after update

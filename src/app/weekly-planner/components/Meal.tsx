@@ -1,12 +1,12 @@
+import type { Meal } from "~/models/types/meal.td"
+import type { Dish } from "~/models/types/dish.td"
 import { BreakfastIcon } from "./Icons/BreakfastIcon"
 import { DinnerIcon } from "./Icons/DinnerIcon"
 import { LunchIcon } from "./Icons/LunchIcon"
 import { MidmorningIcon } from "./Icons/MidmorningIcon"
 import { SnackIcon } from "./Icons/SnackIcon"
 
-// TODO: Hide scrollbar
-
-export const MealComponent = ({ meal, dish }: { meal: string, dish: string }) => {
+export const MealComponent = ({ meal, dish }: { meal: Meal, dish: Dish }) => {
 
     /**
      * Returns an icon based on meal name
@@ -36,7 +36,7 @@ export const MealComponent = ({ meal, dish }: { meal: string, dish: string }) =>
                 {ShowIconMeal({ meal: meal })}
             </div>
             <div className="overflow-hidden flex items-start h-1/2">
-                <span className="">{dish}</span>
+                <span className="">{dish.name}</span>
             </div>
         </div>
     )

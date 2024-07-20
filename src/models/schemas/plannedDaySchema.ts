@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { plannedMeal } from "./plannedMealSchema";
+import { plannedMealSchema } from "./plannedMealSchema";
 
 export const plannedDaySchema = z.object({
     id: z.number(),
     day: z.date(),
-    plannedMeal: plannedMeal
+    plannedMeal: z.lazy(() => plannedMealSchema.array()),
 })

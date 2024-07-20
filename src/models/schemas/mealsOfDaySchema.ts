@@ -20,4 +20,4 @@ export const mealsOfWeekSchema = z.object({
         meal: mealSchema,
         dish: dishSchema,
     }).array(),
-}).array();
+});

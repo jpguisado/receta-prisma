@@ -1,25 +1,21 @@
-import { plannedMeal } from "~/models/schemas/plannedMealSchema";
+"use server";
+
+import { revalidatePath } from "next/cache";
 import { db } from "./db";
+import { comidaPlanificadaSchema } from "~/models/schemas/comidaPlanificadaSchema";
+import type { comidaPlanificada } from "~/models/types/comidaPlanificada.td";
 import { plannedDaySchema } from "~/models/schemas/plannedDaySchema";
-import { comidaPlanificadaSchema } from "~/models/schemas/comidaPlanificada";
 
-const crearComidaPlanificada = comidaPlanificadaSchema;
+const newPlannedDay = plannedDaySchema;
 
-export async function createMealsForWeek(formData: FormData) {
-    'use server';
-    
-    console.log('Log: ', Object.fromEntries(formData.entries()))
-
-    // Falla el parseo
-    // const { meal, dish, date } = crearComidaPlanificada.parse(Object.fromEntries(formData.entries()))
-
-    // await db.comidaPlanificada.create({
-    //     data: {
-    //         date: date,
-    //         meal: meal,
-    //         dish: {
-    //             connect: dish
-    //         }
-    //     }
-    // })
+export async function createMealsForWeek(data: comidaPlanificada) {
+    const { day, plannedMeal } = plannedDaySchema.parse(data);
+    await db.plannedDay.create({
+        data: {
+            day: day,
+            plannedMeal: [plannedMeal]
+            }
+        }
+    });
+    revalidatePath('/concept-form');
 }

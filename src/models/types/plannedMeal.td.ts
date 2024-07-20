@@ -1,4 +1,4 @@
 import type { z } from "zod";
-import type { plannedMeal } from "../schemas/plannedMealSchema";
+import type { plannedMealSchema } from "../schemas/plannedMealSchema";
 
-export type plannedMeal = z.infer<typeof plannedMeal>
+export type plannedMeal = z.infer<typeof plannedMealSchema>

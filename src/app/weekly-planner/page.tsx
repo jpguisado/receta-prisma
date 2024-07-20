@@ -1,13 +1,6 @@
 import { Button } from "~/components/ui/button";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
-import { BreakfastIcon } from "./components/Icons/BreakfastIcon";
 import { DayComponent } from "./components/Day";
-import { RadioButton } from "./components/Input/RadioButton";
 import { fetchDishList, fetchPlannedDays } from "~/server/data-layer";
-import { MidmorningIcon } from "./components/Icons/MidmorningIcon";
-import { DinnerIcon } from "./components/Icons/DinnerIcon";
-import { LunchIcon } from "./components/Icons/LunchIcon";
-import { SnackIcon } from "./components/Icons/SnackIcon";
 import { createMealsForWeek } from "~/server/actions";
 import UpdateDate from "~/components/url/updateDate";
 import { getWeekNumber } from "~/lib/utils";
