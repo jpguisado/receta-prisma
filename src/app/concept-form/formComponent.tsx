@@ -1,5 +1,4 @@
 'use client';
-import type { comidaPlanificada } from "@prisma/client";
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Check, ChevronLeft, ChevronRight, ChevronsUpDown } from "lucide-react"
@@ -12,28 +11,20 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
-import { comidaPlanificadaSchema } from "~/models/schemas/comidaPlanificadaSchema";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
-
-import { cn, getWeekDates, getWeekNumber } from "~/lib/utils";
+import { cn, getWeekDates, getWeekNumber, MEALS, MONTHS } from "~/lib/utils";
 import type { Dish } from "~/models/types/dish.td";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "~/components/ui/command";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { useState } from "react";
 import { createMealsForWeek } from "~/server/actions";
-import { BreakfastIcon } from "../weekly-planner/components/Icons/BreakfastIcon";
-import { DinnerIcon } from "../weekly-planner/components/Icons/DinnerIcon";
-import { LunchIcon } from "../weekly-planner/components/Icons/LunchIcon";
-import { MidmorningIcon } from "../weekly-planner/components/Icons/MidmorningIcon";
-import { SnackIcon } from "../weekly-planner/components/Icons/SnackIcon";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import type { createPlannedDay } from "~/models/types/plannedDay.td";
+import { createPlannedDaySchema } from "~/models/schemas/plannedDaySchema";
 
 export default function FormularioPlanearComida({ dishList }: { dishList: Dish[] }) {
 
   const [startingDate, setStartingDate] = useState(new Date());
-  const meals = ['BREAKFAST', 'MIDMORNING', 'LUNCH', 'SNACK', 'COMPLEMENTARY', 'DINNER'];
-  const monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-  const mealsIcons = [BreakfastIcon(), MidmorningIcon(), LunchIcon(), SnackIcon(), DinnerIcon()];
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -60,10 +51,8 @@ export default function FormularioPlanearComida({ dishList }: { dishList: Dish[]
   /**
    * Manages the form for a plannedMeal
    */
-  const form = useForm<comidaPlanificada>({
-    resolver: zodResolver(comidaPlanificadaSchema),
-    defaultValues: {
-    },
+  const form = useForm<createPlannedDay>({
+    resolver: zodResolver(createPlannedDaySchema),
   })
   /**
    * Handles the submission of the "comidaPlanificada" (planned meal) form.
@@ -77,7 +66,7 @@ export default function FormularioPlanearComida({ dishList }: { dishList: Dish[]
    * 
    * @async - This function is asynchronous because it awaits the completion of `createNewWeek()`.
    */
-  async function onSubmit(values: comidaPlanificada) {
+  async function onSubmit(values: createPlannedDay) {
     await createNewWeek(values);
     form.reset();
   }
@@ -87,13 +76,13 @@ export default function FormularioPlanearComida({ dishList }: { dishList: Dish[]
 
   return (
     <>
-      <div>{monthsOfYear[startingDate.getMonth()]}</div>
+      <div>{MONTHS[startingDate.getMonth()]}</div>
       <div className="text-2xl font-medium">Semana {getWeekNumber(startingDate)}</div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
             control={form.control}
-            name="date"
+            name="day"
             render={({ field }) => (
               <FormItem className="space-y-3">
                 <FormControl>
@@ -112,7 +101,7 @@ export default function FormularioPlanearComida({ dishList }: { dishList: Dish[]
                             {day.getDate()}
                           </FormLabel>
                           <FormControl>
-                            <RadioGroupItem {...form.register("date", { valueAsDate: true })} value={day.toString()} className={`${day.getDate() === new Date().getDate() ? 'ring-2 ring-green-500' : ''}`} />
+                            <RadioGroupItem {...form.register("day", { valueAsDate: true })} value={day.toString()} className={`${day.getDate() === new Date().getDate() ? 'ring-2 ring-green-500' : ''}`} />
                           </FormControl>
                         </FormItem>
                       )
@@ -138,7 +127,7 @@ export default function FormularioPlanearComida({ dishList }: { dishList: Dish[]
                     defaultValue={field.value}
                     className="flex justify-between"
                   >
-                    {meals.map((meal) => {
+                    {MEALS.map((meal) => {
                       return (
                         <FormItem key={meal} className="flex flex-col items-center space-x-0 space-y-0 gap-1">
                           <FormLabel className="font-normal">
@@ -189,7 +178,7 @@ export default function FormularioPlanearComida({ dishList }: { dishList: Dish[]
                         <CommandGroup>
                           {dishList.map((dish) => (
                             <CommandItem
-                              value={dish.id}
+                              value={dish.id.toString()}
                               key={dish.id}
                               onSelect={() => {
                                 form.setValue("dishId", dish.id)

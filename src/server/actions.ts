@@ -2,20 +2,33 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "./db";
-import { comidaPlanificadaSchema } from "~/models/schemas/comidaPlanificadaSchema";
-import type { comidaPlanificada } from "~/models/types/comidaPlanificada.td";
-import { plannedDaySchema } from "~/models/schemas/plannedDaySchema";
+import { createPlannedDaySchema } from "~/models/schemas/plannedDaySchema";
+import type { createPlannedDay } from "~/models/types/plannedDay.td";
 
-const newPlannedDay = plannedDaySchema;
+export async function createMealsForWeek(data: createPlannedDay): Promise<void> {
+    const { day, dishId, meal } = createPlannedDaySchema.parse(data);
 
-export async function createMealsForWeek(data: comidaPlanificada) {
-    const { day, plannedMeal } = plannedDaySchema.parse(data);
-    await db.plannedDay.create({
-        data: {
+    await db.plannedDay.upsert({
+        create: {
             day: day,
-            plannedMeal: [plannedMeal]
+            plannedMeal: {
+                create: {
+                    meal: meal,
+                    dishId: dishId
+                }
             }
+        },
+        update: {
+            plannedMeal: {
+                create: {
+                    meal: meal,
+                    dishId: dishId
+                }
+            }
+        },
+        where: {
+            day: day
         }
-    });
+    })
     revalidatePath('/concept-form');
 }

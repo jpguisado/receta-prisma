@@ -5,6 +5,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export const MEALS = ['BREAKFAST', 'MIDMORNING', 'LUNCH', 'SNACK', 'COMPLEMENTARY', 'DINNER'];
+export const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 /**
  * Gets the number of a week given a date
