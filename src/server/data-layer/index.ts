@@ -29,7 +29,6 @@ export async function fetchComidasPlanificadas(): Promise<plannedMeal[]> {
  * @returns the days of the week
  */
 export async function fetchPlannedDays(datesOfTheWeek: Date[]): Promise<plannedDay[]> {
-    console.log(datesOfTheWeek)
     const comidaPlanificada = await db.plannedDay.findMany({
         include: {
             plannedMeal: {

@@ -2,7 +2,7 @@
 
 import { fetchDishList, fetchPlannedDays } from "~/server/data-layer";
 import FormularioPlanearComida from "./formComponent";
-import { DayComponent } from "../weekly-planner/components/Day";
+import { DayComponent } from "./components/Day";
 import { getWeekDates } from "~/lib/utils";
 import { Suspense } from "react";
 
