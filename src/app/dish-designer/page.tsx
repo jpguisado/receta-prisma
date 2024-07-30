@@ -1,38 +1,45 @@
 'use client';
-
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod.js";
 import { useFieldArray, useForm } from "react-hook-form";
 import { Button } from "~/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { dishSchema } from "~/models/schemas/dishSchema";
 import type { Dish } from "~/models/types/dish.td";
+import { createDish } from "~/server/actions";
 
 export default function DishDesigner() {
-    const { control, register, handleSubmit } = useForm<Dish>({
-        resolver: zodResolver(dishSchema),
-    });
     /**
      * Manages the form for a plannedMeal
      */
-    const form = useForm<Dish>({
+    const { control } = useForm<Dish>({
         resolver: zodResolver(dishSchema),
     })
+    const form = useForm<Dish>({
+        resolver: zodResolver(dishSchema),
+        defaultValues: {
+            name: '',
+        }
+    })
+
     const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
         control,
         name: "ingredientList", // unique name for your Field Array
     });
+
+    const createNewDish = createDish.bind(null);
+
     /**
      * 
      * @param values 
      */
     async function onSubmit(values: Dish) {
-        console.log(values);
+        await createNewDish(values);
         form.reset();
     }
     return (
         <Form {...form}>
-            <form className="flex flex-col gap-3 h-full" onSubmit={handleSubmit(onSubmit)}>
+            <form autoComplete="off" className="flex flex-col gap-3 h-full" onSubmit={form.handleSubmit(onSubmit)}>
                 <div className="flex justify-between gap-3">
                     <FormField
                         control={form.control}
@@ -55,9 +62,11 @@ export default function DishDesigner() {
                 <div className="overflow-scroll flex flex-col gap-3">
                     {
                         fields.map((field, index) => (
-                            <div key={`ingredientList.${index}`} className="flex items-center gap-3">
+                            <div key={field.id} className="flex items-center gap-3">
                                 <FormField
+                                    key={field.id}
                                     control={form.control}
+                                    defaultValue={''}
                                     name={`ingredientList.${index}.name`}
                                     render={({ field }) => (
                                         <FormItem className="flex w-full">
