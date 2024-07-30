@@ -30,6 +30,7 @@ export default function DishDesigner() {
         resolver: zodResolver(createDishSchema),
         defaultValues: {
             name: '',
+            recipe: '',
         }
     })
 
