@@ -178,10 +178,10 @@ export default function FormularioPlanearComida({ dishList }: { dishList: Dish[]
                         <CommandGroup>
                           {dishList.map((dish) => (
                             <CommandItem
-                              value={dish.id.toString()}
+                              value={dish.id!.toString()}
                               key={dish.id}
                               onSelect={() => {
-                                form.setValue("dishId", dish.id)
+                                form.setValue("dishId", dish.id!)
                               }}
                             >
                               <Check

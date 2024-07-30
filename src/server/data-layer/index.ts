@@ -1,6 +1,5 @@
 import type { Dish } from "~/models/types/dish.td";
 import { db } from "../db";
-import type { nuevaComidaPlanificada } from "~/models/types/nuevaComidaPlanificada.td";
 import type { plannedMeal } from "~/models/types/plannedMeal.td";
 import type { plannedDay } from "~/models/types/plannedDay.td";
 

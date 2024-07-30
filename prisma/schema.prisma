@@ -13,6 +13,7 @@ model Dish {
     ingredients IngredientsinDishes[]
     plannedMeal plannedMeal[]
     comidaPlanificada comidaPlanificada[]
+    recipe String @default("")
 }
 
 model Ingredient {
@@ -26,7 +27,8 @@ model IngredientsinDishes {
     dishId  Int
     ingredient Ingredient @relation(fields: [ingredientId], references: [id])
     ingredientId Int
-
+    quantity String
+    quantityUnit String @default("g")
     @@id([dishId, ingredientId])
 }
 
