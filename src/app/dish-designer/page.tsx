@@ -36,7 +36,7 @@ export default function DishDesigner() {
 
     const { fields, append, remove } = useFieldArray({
         control,
-        name: "ingredientList", // unique name for your Field Array
+        name: "ingredientList",
     });
 
     const createNewDish = createDish.bind(null);
