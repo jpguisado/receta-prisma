@@ -12,6 +12,8 @@ model Dish {
     name String
     ingredients IngredientsinDishes[]
     plannedMeal plannedMeal[]
+    comidaPlanificada comidaPlanificada[]
+    recipe String @default("")
 }
 
 model Ingredient {
@@ -25,7 +27,8 @@ model IngredientsinDishes {
     dishId  Int
     ingredient Ingredient @relation(fields: [ingredientId], references: [id])
     ingredientId Int
-
+    quantity String
+    quantityUnit String @default("g")
     @@id([dishId, ingredientId])
 }
 
@@ -35,13 +38,15 @@ enum Meal {
     LUNCH
     SNACK
     DINNER
+    COMPLEMENTARY
 }
 
-model plannedDay {
+model comidaPlanificada {
     id Int @id @default(autoincrement())
-    day DateTime @db.Date @unique
- 
-    plannedMeal plannedMeal[]
+    meal Meal
+    dish Dish @relation(fields: [dishId], references: [id])
+    dishId Int
+    date DateTime @db.Date
 }
 
 model plannedMeal {
@@ -52,4 +57,10 @@ model plannedMeal {
 
     plannedDay plannedDay @relation(fields: [plannedDayId], references: [id])
     plannedDayId Int
+}
+
+model plannedDay {
+    id Int @id @default(autoincrement())
+    day DateTime @db.Date @unique
+    plannedMeal plannedMeal[]
 }
