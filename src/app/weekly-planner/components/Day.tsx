@@ -1,6 +1,5 @@
-import type { plannedMeal } from "~/models/types/plannedMeal.td"
 import { MealComponent } from "./Meal"
-import { plannedDay } from "~/models/types/plannedDay.td"
+import type { plannedDay } from "~/models/types/plannedDay.td"
 
 export const DayComponent = ( comidas: plannedDay) => {
     return (

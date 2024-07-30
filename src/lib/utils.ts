@@ -42,7 +42,7 @@ export const getWeekDates = (startingDate: Date) => {
  * @param evaluatedDate any date of the week
  * @returns the date of the first day of the week assuming that's monday 
  */
-const firstDayOfWeek = (evaluatedDate: Date) => {
+export const firstDayOfWeek = (evaluatedDate: Date) => {
   const daysElapsed = evaluatedDate.getDay();
   return new Date(evaluatedDate.getTime() - ((daysElapsed - 1) * 86400000));
 }

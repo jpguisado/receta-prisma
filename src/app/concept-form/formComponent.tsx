@@ -27,6 +27,7 @@ export default function FormularioPlanearComida({ dishList }: { dishList: Dish[]
   const [startingDate, setStartingDate] = useState(new Date());
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  // eslint-disable-next-line @typescript-eslint/unbound-method
   const { replace } = useRouter();
 
   /**

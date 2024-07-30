@@ -33,7 +33,7 @@ export default function DishDesigner() {
         }
     })
 
-    const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
+    const { fields, append, remove } = useFieldArray({
         control,
         name: "ingredientList", // unique name for your Field Array
     });
