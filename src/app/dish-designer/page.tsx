@@ -70,7 +70,7 @@ export default function DishDesigner() {
                         onClick={() =>
                             append({
                                 name: '',
-                                quantity: 0,
+                                quantity: '',
                                 quantityUnit: 'g'
                             })
                         }
