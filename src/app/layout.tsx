@@ -22,7 +22,14 @@ export default function RootLayout({
 }) {
   return (
     <Providers>
-      <html lang="en">
+      <html lang="es">
+        <head>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1" />
+          <meta property="og:image" content="<generated>" />
+          <meta property="og:image:type" content="<generated>" />
+          <meta property="og:image:width" content="<generated>" />
+          <meta property="og:image:height" content="<generated>" />
+        </head>
         <body className={`h-screen flex flex-col justify-between font-sans ${inter.variable}`}>
           <div className="h-[90%] p-6">
             {children}
