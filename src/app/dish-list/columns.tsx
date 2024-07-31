@@ -5,6 +5,7 @@ import { MoreHorizontal } from "lucide-react"
 import { Button } from "~/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "~/components/ui/dropdown-menu"
 import type { Dish } from "~/models/types/dish.td"
+import { deleteDishWithId } from "~/server/actions"
 
 export const columns: ColumnDef<Dish>[] = [
   {
@@ -23,7 +24,11 @@ export const columns: ColumnDef<Dish>[] = [
     id: "actions",
     cell: ({ row }) => {
       const dish = row.original
- 
+      const deleteDish = deleteDishWithId.bind(null, dish.id!)
+      async function removeDish() {
+        await deleteDish()
+      }
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -39,7 +44,7 @@ export const columns: ColumnDef<Dish>[] = [
             >
               Edit dish
             </DropdownMenuItem>
-            <DropdownMenuItem>Delete dish</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => removeDish()}>Delete dish</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )
