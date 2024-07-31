@@ -50,3 +50,12 @@ export async function createDish(data: Dish): Promise<void> {
         })
     }
 }
+
+export async function deleteDishWithId(id: number, formData: FormData) {
+    await db.dish.delete({
+        where: {
+            id: id
+        }
+    })
+    revalidatePath('/dish-list')
+}
