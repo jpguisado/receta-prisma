@@ -130,12 +130,12 @@ export default function FormularioPlanearComida({ dishList }: { dishList: Dish[]
                   >
                     {MEALS.map((meal) => {
                       return (
-                        <FormItem key={meal} className="flex flex-col items-center space-x-0 space-y-0 gap-1">
+                        <FormItem key={meal.label} className="flex flex-col items-center space-x-0 space-y-0 gap-1">
                           <FormLabel className="font-normal">
-                            {meal}
+                            {meal.icon}
                           </FormLabel>
                           <FormControl>
-                            <RadioGroupItem value={meal} />
+                            <RadioGroupItem value={meal.label} />
                           </FormControl>
                         </FormItem>
                       )

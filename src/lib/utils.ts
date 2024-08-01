@@ -1,11 +1,33 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { BreakfastIcon } from "~/app/weekly-planner/components/Icons/BreakfastIcon"
+import { DinnerIcon } from "~/app/weekly-planner/components/Icons/DinnerIcon";
+import { LunchIcon } from "~/app/weekly-planner/components/Icons/LunchIcon";
+import { MidmorningIcon } from "~/app/weekly-planner/components/Icons/MidmorningIcon";
+import { SnackIcon } from "~/app/weekly-planner/components/Icons/SnackIcon";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const MEALS = ['BREAKFAST', 'MIDMORNING', 'LUNCH', 'SNACK', 'COMPLEMENTARY', 'DINNER'];
+export const MEALS = [
+  {
+    label: 'BREAKFAST',
+    icon: BreakfastIcon()
+  },{
+    label: 'MIDMORNING',
+    icon: MidmorningIcon(),
+  },{
+    label: 'LUNCH',
+    icon: LunchIcon(),
+  }, {
+    label: 'SNACK',
+    icon: SnackIcon(), 
+  },{
+    label: 'DINNER',
+    icon: DinnerIcon()
+  }
+];
 export const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 /**
