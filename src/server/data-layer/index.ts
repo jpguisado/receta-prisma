@@ -17,7 +17,7 @@ export async function fetchDishList(): Promise<Dish[]> {
  * @param id 
  */
 export async function fetchDishWithId(id:number): Promise<newDish> {
-    return await db.dish.findUnique({
+    return await db.dish.findUniqueOrThrow({
         where: {
             id: id
         }
