@@ -64,7 +64,7 @@ export default function DishDesignerComponent({ name, recipe, ingredientList }: 
                         render={({ field }) => (
                             <FormItem className="w-full">
                                 <FormControl>
-                                    <Input className="" placeholder="Dish name" {...field} />
+                                    <Input className="text-lg" placeholder="Dish name" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -116,7 +116,7 @@ export default function DishDesignerComponent({ name, recipe, ingredientList }: 
                                         render={({ field }) => (
                                             <FormItem className="flex w-full">
                                                 <FormControl className="flex">
-                                                    <Input className="w-full" placeholder="Ingredient name" {...field} />
+                                                    <Input className="w-full text-lg" placeholder="Ingredient name" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -158,7 +158,7 @@ export default function DishDesignerComponent({ name, recipe, ingredientList }: 
                                         render={({ field }) => (
                                             <FormItem className="flex w-full">
                                                 <FormControl className="flex">
-                                                    <Input className="w-full" placeholder="Ingredient quantity" {...field} />
+                                                    <Input className="w-full text-lg" placeholder="Ingredient quantity" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
