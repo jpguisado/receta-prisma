@@ -1,4 +1,4 @@
-import type { Dish } from "~/models/types/dish.td";
+import type { Dish, newDish } from "~/models/types/dish.td";
 import { db } from "../db";
 import type { plannedMeal } from "~/models/types/plannedMeal.td";
 import type { plannedDay } from "~/models/types/plannedDay.td";
@@ -10,6 +10,18 @@ import type { plannedDay } from "~/models/types/plannedDay.td";
 export async function fetchDishList(): Promise<Dish[]> {
     const dishes = await db.dish.findMany()
     return dishes;
+}
+
+/**
+ * Fetch a dish with an id
+ * @param id 
+ */
+export async function fetchDishWithId(id:number): Promise<newDish> {
+    return await db.dish.findUnique({
+        where: {
+            id: id
+        }
+    })    
 }
 
 /**

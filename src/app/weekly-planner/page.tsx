@@ -8,6 +8,9 @@ import { Suspense } from "react";
 
 export default async function Formulario({ searchParams }: { searchParams: { dateInMilis?: string, page?: string; }; }) {
 
+    /**
+     * Fetch dish list
+     */
     const dishList = await fetchDishList();
 
     /**
@@ -27,7 +30,7 @@ export default async function Formulario({ searchParams }: { searchParams: { dat
      * Gets planned days of the referenced week
      */
     const plannedDaysOfWeek = await fetchPlannedDays(datesOfWeekToBePrinted);
-    
+
     return (
         <>
             <FormularioPlanearComida

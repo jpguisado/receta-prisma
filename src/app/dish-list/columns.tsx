@@ -2,6 +2,7 @@
 
 import type { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
+import Link from "next/link"
 import { Button } from "~/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "~/components/ui/dropdown-menu"
 import type { Dish } from "~/models/types/dish.td"
@@ -39,10 +40,8 @@ export const columns: ColumnDef<Dish>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(dish.id!.toString())}
-            >
-              Edit dish
+            <DropdownMenuItem>
+              <Link href={`/dish-list/${dish.id}`}>Edit dish</Link>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => removeDish()}>Delete dish</DropdownMenuItem>
           </DropdownMenuContent>
