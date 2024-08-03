@@ -16,12 +16,39 @@ export async function fetchDishList(): Promise<Dish[]> {
  * Fetch a dish with an id
  * @param id 
  */
-export async function fetchDishWithId(id:number): Promise<newDish> {
-    return await db.dish.findUniqueOrThrow({
+export async function fetchDishWithId(id: number): Promise<newDish> {
+    const {name, ingredients, recipe} = await db.dish.findUniqueOrThrow({
+        select: {
+            name: true,
+            ingredients: {
+                select: {
+                    ingredient: true,
+                    quantity: true,
+                    quantityUnit: true,
+                    ingredientId: true
+                }
+            },
+            id: true,
+            recipe: true
+        },
         where: {
             id: id
         }
-    })    
+    });
+    const newDishList = ingredients.flatMap((item) => {
+        return {
+            'quantityUnit': item.quantityUnit,
+            'quantity': item.quantity,
+            'name': item.ingredient.name,
+            'id': item.ingredient.id,
+        };
+    })
+    const dish: newDish = {
+        name: name,
+        ingredientList: newDishList,
+        recipe: recipe
+    }
+    return dish;
 }
 
 /**

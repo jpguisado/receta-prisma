@@ -43,12 +43,48 @@ export async function createDish(data: Dish): Promise<void> {
                 recipe: recipe,
                 ingredients: {
                     create: ingredientList.map((ingredient) => {
-                        return { quantity: ingredient.quantity, quantityUnit: ingredient.quantityUnit, ingredient: { create: { name: ingredient.name } } }
+                        return { quantity: ingredient.quantity, quantityUnit: ingredient.quantityUnit, ingredient: { create: { name: ingredient.name } } } // TODO: change this with PUT https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types/working-with-scalar-lists-arrays#setting-the-value-of-a-scalar-list
                     }),
                 },
             }
         })
     }
+}
+
+export async function editDish(data: Dish): Promise<void> {
+    const { id, name, ingredientList, recipe, } = createDishSchema.parse(data);
+    console.log('Estoy en el servidor')
+    await db.dish.update({
+        data: {
+            name: name,
+            recipe: recipe,
+        },
+        where: {
+            id: 4
+        }
+    })
+
+    // Updates each ingredient name
+    for (const ingredient of ingredientList!) {
+        await db.ingredient.update({
+            data: {
+                name: ingredient.name
+            },
+            where: {
+                id: ingredient.ingredientId
+            }
+        })
+    }
+
+}
+
+export async function deleteIngredientFromDish(dishId: number, ingredientId: number): Promise<void> {
+    await db.ingredientsinDishes.deleteMany({
+        where: {
+            dishId: dishId,
+            ingredientId: ingredientId
+        }
+    })
 }
 
 export async function deleteDishWithId(id: number) {

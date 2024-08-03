@@ -14,3 +14,10 @@ export const createDishSchema = z.object({
     name: z.string().min(1),
     ingredientList: createIngredientSchema.array().optional()
 });
+
+export const editDishSchema = z.object({
+    id: z.number().optional(),
+    name: z.string().min(1),
+    recipe: z.string().optional(),
+    ingredientList: createIngredientSchema.array().optional()
+});

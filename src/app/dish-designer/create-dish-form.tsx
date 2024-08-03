@@ -8,14 +8,20 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~
 import { Textarea } from "~/components/ui/textarea";
 import { createDishSchema } from "~/models/schemas/dishSchema";
 import type { newDish } from "~/models/types/dish.td";
-import { createDish } from "~/server/actions";
+import { createDish, deleteIngredientFromDish, editDish } from "~/server/actions";
 
-export default function DishDesignerComponent({ name, recipe, ingredientList }: Partial<newDish> ) {
+export default function DishDesignerComponent({ name, recipe, ingredientList, id }: Partial<newDish>) {
+    
     /**
      * Manages the form for a plannedMeal
      */
     const { control } = useForm<newDish>({
         resolver: zodResolver(createDishSchema),
+        values: {
+            name: name!,
+            recipe: recipe,
+            ingredientList: ingredientList
+        }
     })
 
     const measureUnits = [
@@ -35,23 +41,30 @@ export default function DishDesignerComponent({ name, recipe, ingredientList }: 
         values: {
             name: name!,
             recipe: recipe!,
-            ingredientList: ingredientList!
+            ingredientList: ingredientList
         }
     })
 
-    const { fields, append, remove } = useFieldArray({
+    const { fields, append, remove, update } = useFieldArray({
         control,
         name: "ingredientList",
     });
 
     const createNewDish = createDish.bind(null);
+    const editExistingDish = editDish.bind(null);
+    const deleteIngredient = deleteIngredientFromDish.bind(null)
+
+    async function deleteIngredientFromDB(ingredientId: number, index: number) {
+        await deleteIngredient(4,2)
+        remove(index)
+    }
 
     /**
      * 
      * @param values 
      */
     async function onSubmit(values: newDish) {
-        await createNewDish(values);
+        id ? await createNewDish(values) : await editExistingDish(values)
         form.reset();
     }
     return (
@@ -77,7 +90,7 @@ export default function DishDesignerComponent({ name, recipe, ingredientList }: 
                             append({
                                 name: '',
                                 quantity: '',
-                                quantityUnit: 'g'
+                                quantityUnit: ''
                             })
                         }
                     >
@@ -96,7 +109,7 @@ export default function DishDesignerComponent({ name, recipe, ingredientList }: 
                                 <FormControl>
                                     <Textarea
                                         placeholder="Tell us about the recipe"
-                                        className="resize-none"
+                                        className="resize-y text-lg"
                                         {...field}
                                     />
                                 </FormControl>
@@ -122,7 +135,7 @@ export default function DishDesignerComponent({ name, recipe, ingredientList }: 
                                             </FormItem>
                                         )}
                                     />
-                                    <Button className="flex gap-1" variant={'destructive'} type="button" onClick={() => remove(index)}>
+                                    <Button className="flex gap-1" variant={'destructive'} type="button" onClick={() => deleteIngredientFromDB(field.ingredientId!, index)}>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                                         </svg>
@@ -166,7 +179,6 @@ export default function DishDesignerComponent({ name, recipe, ingredientList }: 
                                     />
                                 </div>
                             </div>
-
                         ))
                     }
                 </div>

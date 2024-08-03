@@ -14,6 +14,7 @@ export default async function EditDish({ params }: { params: { id: string }; }) 
                 name={dish.name}
                 ingredientList={dish.ingredientList}
                 recipe={dish.recipe}
+                id={dish.id}
             />
         </div>
     )
