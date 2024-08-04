@@ -7,10 +7,10 @@ import { Input } from "~/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { Textarea } from "~/components/ui/textarea";
 import { createDishSchema } from "~/models/schemas/dishSchema";
-import type { editDishType, newDish } from "~/models/types/dish.td";
+import type { newDish } from "~/models/types/dish.td";
 import { createDish, deleteIngredientFromDish, editDish } from "~/server/actions";
 
-export default function DishDesignerComponent({ name, recipe, ingredientList, id }: Partial<editDishType>) {
+export default function DishDesignerComponent({ name, recipe, ingredientList, id }: Partial<newDish>) {
     
     /**
      * Manages the form for a plannedMeal
@@ -47,7 +47,7 @@ export default function DishDesignerComponent({ name, recipe, ingredientList, id
         }
     })
 
-    const { fields, append, remove, update } = useFieldArray({
+    const { fields, append, remove } = useFieldArray({
         control,
         name: "ingredientList",
     });

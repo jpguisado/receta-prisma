@@ -80,7 +80,7 @@ export async function editDish(data: newDish): Promise<void> {
 
         await db.ingredient.upsert({
             where: {
-                id: ingredient.ingredientId | undefined
+                id: ingredient.ingredientId! | undefined!
             },
             create: {
                 name: ingredient.name,
