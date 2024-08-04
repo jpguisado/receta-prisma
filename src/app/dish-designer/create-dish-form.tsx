@@ -67,7 +67,6 @@ export default function DishDesignerComponent({ name, recipe, ingredientList, id
      * @param values 
      */
     async function onSubmit(values: newDish) {
-        console.log('soy tu ID', values.ingredientList)
         id ?  await editExistingDish(values) : await createNewDish(values)
         form.reset();
     }
