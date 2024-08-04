@@ -5,7 +5,6 @@ import { fetchDishWithId } from "~/server/data-layer";
 export default async function EditDish({ params }: { params: { id: string }; }) {
 
     const dish = await fetchDishWithId(parseInt(params.id))
-
     return (
         <div>
             <div className="text-2xl font-medium">Editar recetas:</div>

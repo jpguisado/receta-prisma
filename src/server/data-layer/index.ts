@@ -17,19 +17,19 @@ export async function fetchDishList(): Promise<Dish[]> {
  * @param id 
  */
 export async function fetchDishWithId(id: number): Promise<newDish> {
-    const {name, ingredients, recipe} = await db.dish.findUniqueOrThrow({
+    const {name, ingredients, recipe } = await db.dish.findUniqueOrThrow({
         select: {
             name: true,
+            id: true,
+            recipe: true,
             ingredients: {
                 select: {
                     ingredient: true,
                     quantity: true,
                     quantityUnit: true,
-                    ingredientId: true
+                    ingredientId: true,
                 }
             },
-            id: true,
-            recipe: true
         },
         where: {
             id: id
@@ -40,13 +40,14 @@ export async function fetchDishWithId(id: number): Promise<newDish> {
             'quantityUnit': item.quantityUnit,
             'quantity': item.quantity,
             'name': item.ingredient.name,
-            'id': item.ingredient.id,
+            'ingredientId': item.ingredient.id,
         };
     })
     const dish: newDish = {
         name: name,
         ingredientList: newDishList,
-        recipe: recipe
+        recipe: recipe,
+        id: id
     }
     return dish;
 }

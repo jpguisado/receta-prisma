@@ -7,10 +7,10 @@ import { Input } from "~/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { Textarea } from "~/components/ui/textarea";
 import { createDishSchema } from "~/models/schemas/dishSchema";
-import type { newDish } from "~/models/types/dish.td";
+import type { editDishType, newDish } from "~/models/types/dish.td";
 import { createDish, deleteIngredientFromDish, editDish } from "~/server/actions";
 
-export default function DishDesignerComponent({ name, recipe, ingredientList, id }: Partial<newDish>) {
+export default function DishDesignerComponent({ name, recipe, ingredientList, id }: Partial<editDishType>) {
     
     /**
      * Manages the form for a plannedMeal
@@ -20,7 +20,8 @@ export default function DishDesignerComponent({ name, recipe, ingredientList, id
         values: {
             name: name!,
             recipe: recipe,
-            ingredientList: ingredientList
+            ingredientList: ingredientList,
+            id: id
         }
     })
 
@@ -41,7 +42,8 @@ export default function DishDesignerComponent({ name, recipe, ingredientList, id
         values: {
             name: name!,
             recipe: recipe!,
-            ingredientList: ingredientList
+            ingredientList: ingredientList,
+            id: id
         }
     })
 
@@ -54,8 +56,9 @@ export default function DishDesignerComponent({ name, recipe, ingredientList, id
     const editExistingDish = editDish.bind(null);
     const deleteIngredient = deleteIngredientFromDish.bind(null)
 
-    async function deleteIngredientFromDB(ingredientId: number, index: number) {
-        await deleteIngredient(4,2)
+    async function deleteIngredientFromDB(id: number, ingredientId: number, index: number) {
+        console.log(id)
+        await deleteIngredient(id, ingredientId)
         remove(index)
     }
 
@@ -64,7 +67,8 @@ export default function DishDesignerComponent({ name, recipe, ingredientList, id
      * @param values 
      */
     async function onSubmit(values: newDish) {
-        id ? await createNewDish(values) : await editExistingDish(values)
+        console.log('soy tu ID', values.ingredientList)
+        id ?  await editExistingDish(values) : await createNewDish(values)
         form.reset();
     }
     return (
@@ -90,7 +94,7 @@ export default function DishDesignerComponent({ name, recipe, ingredientList, id
                             append({
                                 name: '',
                                 quantity: '',
-                                quantityUnit: ''
+                                quantityUnit: '',
                             })
                         }
                     >
@@ -135,14 +139,13 @@ export default function DishDesignerComponent({ name, recipe, ingredientList, id
                                             </FormItem>
                                         )}
                                     />
-                                    <Button className="flex gap-1" variant={'destructive'} type="button" onClick={() => deleteIngredientFromDB(field.ingredientId!, index)}>
+                                    <Button className="flex gap-1" variant={'destructive'} type="button" onClick={() => deleteIngredientFromDB(id!, field.ingredientId!, index)}>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                                         </svg>
                                         Borrar
                                     </Button>
                                 </div>
-
                                 <div className="flex gap-3">
                                     <FormField
                                         control={form.control}

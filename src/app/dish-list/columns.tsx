@@ -40,9 +40,11 @@ export const columns: ColumnDef<Dish>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <Link href={`/dish-list/${dish.id}`}>
             <DropdownMenuItem>
-              <Link href={`/dish-list/${dish.id}`}>Edit dish</Link>
+              Edit dish
             </DropdownMenuItem>
+            </Link>
             <DropdownMenuItem onClick={() => removeDish()}>Delete dish</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

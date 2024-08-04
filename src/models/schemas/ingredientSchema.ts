@@ -11,3 +11,11 @@ export const createIngredientSchema = z.object({
     quantity: z.string(),
     quantityUnit: z.string()
 });
+
+
+export const editIngredientSchema = z.object({
+    ingredientId: z.number(),
+    name: z.string().min(1),
+    quantity: z.string(),
+    quantityUnit: z.string()
+});

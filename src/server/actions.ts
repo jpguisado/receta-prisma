@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createDishSchema } from "~/models/schemas/dishSchema";
 import { createPlannedDaySchema } from "~/models/schemas/plannedDaySchema";
-import type { Dish } from "~/models/types/dish.td";
+import type { Dish, newDish } from "~/models/types/dish.td";
 import type { createPlannedDay } from "~/models/types/plannedDay.td";
 import { db } from "./db";
 
@@ -51,34 +51,59 @@ export async function createDish(data: Dish): Promise<void> {
     }
 }
 
-export async function editDish(data: Dish): Promise<void> {
+export async function editDish(data: newDish): Promise<void> {
     const { id, name, ingredientList, recipe, } = createDishSchema.parse(data);
-    console.log('Estoy en el servidor')
     await db.dish.update({
         data: {
             name: name,
             recipe: recipe,
         },
         where: {
-            id: 4
+            id: id
         }
     })
 
     // Updates each ingredient name
     for (const ingredient of ingredientList!) {
-        await db.ingredient.update({
-            data: {
-                name: ingredient.name
-            },
+        if (ingredient.ingredientId) {
+            await db.ingredientsinDishes.updateMany({
+                data: {
+                    quantity: ingredient.quantity,
+                    quantityUnit: ingredient.quantityUnit,
+                },
+                where: {
+                    dishId: id,
+                    ingredientId: ingredient.ingredientId,
+                }
+            })
+        }
+
+        await db.ingredient.upsert({
             where: {
-                id: ingredient.ingredientId
-            }
+                id: ingredient.ingredientId | undefined
+            },
+            create: {
+                name: ingredient.name,
+                dishes: {
+                    createMany: {
+                        data: {
+                            dishId: id!,
+                            quantity: ingredient.quantity,
+                            quantityUnit: ingredient.quantityUnit
+                        }
+                    }
+                }
+            },
+            update: {
+                name: ingredient.name,
+            },
         })
     }
-
+    revalidatePath('/dish-list/[]')
 }
 
 export async function deleteIngredientFromDish(dishId: number, ingredientId: number): Promise<void> {
+    console.log(dishId, ingredientId)
     await db.ingredientsinDishes.deleteMany({
         where: {
             dishId: dishId,
