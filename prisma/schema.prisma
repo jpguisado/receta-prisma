@@ -12,7 +12,6 @@ model Dish {
     name String
     ingredients IngredientsinDishes[]
     plannedMeal plannedMeal[]
-    comidaPlanificada comidaPlanificada[]
     recipe String @default("")
 }
 
@@ -27,8 +26,8 @@ model IngredientsinDishes {
     dishId  Int
     ingredient Ingredient @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
     ingredientId Int
-    quantity String
-    quantityUnit String @default("g")
+    quantity String @default("")
+    quantityUnit String @default("")
     @@id([dishId, ingredientId])
 }
 
@@ -39,14 +38,6 @@ enum Meal {
     SNACK
     DINNER
     COMPLEMENTARY
-}
-
-model comidaPlanificada {
-    id Int @id @default(autoincrement())
-    meal Meal
-    dish Dish @relation(fields: [dishId], references: [id])
-    dishId Int
-    date DateTime @db.Date
 }
 
 model plannedMeal {

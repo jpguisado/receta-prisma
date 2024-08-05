@@ -1,4 +1,4 @@
-import type { Dish, newDish } from "~/models/types/dish.td";
+import type { BrandNewDish, Dish, newDish } from "~/models/types/dish.td";
 import { db } from "../db";
 import type { plannedMeal } from "~/models/types/plannedMeal.td";
 import type { plannedDay } from "~/models/types/plannedDay.td";
@@ -7,8 +7,8 @@ import type { plannedDay } from "~/models/types/plannedDay.td";
  * Gets all dishes in database
  * @returns 
  */
-export async function fetchDishList(): Promise<Dish[]> {
-    const dishes = await db.dish.findMany()
+export async function fetchDishList(): Promise<BrandNewDish[]> {
+    const dishes = await db.dish.findMany({include: {ingredients: { include: {ingredient: true}}}})
     return dishes;
 }
 

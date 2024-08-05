@@ -1,7 +1,9 @@
 import type { z } from "zod";
-import type { createDishSchema, dishSchema, editDishSchema } from "../schemas/dishSchema";
+import type { brandNewDishSchema, createDishSchema, dishSchema, editDishSchema } from "../schemas/dishSchema";
 
 export type Dish = z.infer<typeof dishSchema>
+
+export type BrandNewDish = z.infer<typeof brandNewDishSchema>
 
 export type newDish = z.infer<typeof createDishSchema>
 

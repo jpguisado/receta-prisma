@@ -1,9 +1,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createDishSchema } from "~/models/schemas/dishSchema";
+import { brandNewDishSchema, createDishSchema } from "~/models/schemas/dishSchema";
 import { createPlannedDaySchema } from "~/models/schemas/plannedDaySchema";
-import type { Dish, newDish } from "~/models/types/dish.td";
+import type { BrandNewDish, Dish, newDish } from "~/models/types/dish.td";
 import type { createPlannedDay } from "~/models/types/plannedDay.td";
 import { db } from "./db";
 
@@ -34,29 +34,48 @@ export async function createMealsForWeek(data: createPlannedDay): Promise<void> 
     revalidatePath('/concept-form');
 }
 
-export async function createDish(data: Dish): Promise<void> {
-    const { name, ingredientList, recipe, } = createDishSchema.parse(data);
-    if (ingredientList) {
+export async function createDish(data: BrandNewDish): Promise<void> {
+    const { name, ingredients, recipe, } = brandNewDishSchema.parse(data);
+
+    try {
+        console.log('Datos que vienen del form: ', ingredients);
         await db.dish.create({
             data: {
                 name: name,
                 recipe: recipe,
                 ingredients: {
-                    create: ingredientList.map((ingredient) => {
-                        return { 
-                            quantity: ingredient.quantity, 
-                            quantityUnit: ingredient.quantityUnit, 
-                            ingredient: { 
-                                create: { 
-                                    name: ingredient.name 
-                                } 
-                            }
-                        } // TODO: change this with PUT https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types/working-with-scalar-lists-arrays#setting-the-value-of-a-scalar-list
-                    }),
+                    create: ingredients
                 },
             }
-        }).catch((error) => {console.log(error)})
+        })
+
+    } catch (error) {
+        console.error(error)
     }
+
+    // if (ingredientList) {
+    //     await db.dish.create({
+    //         data: {
+    //             name: name,
+    //             recipe: recipe,
+    //             ingredients: {
+    //                 create: ingredientList.map((ingredient) => {
+    //                     return { 
+    //                         quantity: ingredient.quantity, 
+    //                         quantityUnit: ingredient.quantityUnit, 
+    //                         ingredient: { 
+    //                             create: { 
+    //                                 name: ingredient.name 
+    //                             } 
+    //                         }
+    //                     } // TODO: change this with PUT https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types/working-with-scalar-lists-arrays#setting-the-value-of-a-scalar-list
+    //                 }),
+    //             },
+    //         }
+    //     }).catch((error) => {console.log(error)})
+    // }
+
+
 }
 
 export async function editDish(data: newDish): Promise<void> {

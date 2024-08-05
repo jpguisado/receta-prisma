@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createIngredientSchema, editIngredientSchema, ingredientSchema } from "./ingredientSchema";
+import { createIngredientSchema, editIngredientSchema, ingredientSchema, ingredientsOnDishesSchema } from "./ingredientSchema";
 
 export const dishSchema = z.object({
     id: z.number().optional(),
@@ -20,4 +20,11 @@ export const editDishSchema = z.object({
     recipe: z.string().optional(),
     name: z.string().min(1),
     ingredientList: editIngredientSchema.array().optional()
+});
+
+export const brandNewDishSchema = z.object({
+    id: z.number().optional(),
+    name: z.string().min(1),
+    recipe: z.string().optional(),
+    ingredients: ingredientsOnDishesSchema.array().optional()
 });

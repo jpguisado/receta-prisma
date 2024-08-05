@@ -1,29 +1,16 @@
 'use client';
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod.js";
-import { useFieldArray, useForm } from "react-hook-form";
+import { FormProvider, useFieldArray, useForm, useFormContext } from "react-hook-form";
 import { Button } from "~/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { Textarea } from "~/components/ui/textarea";
-import { createDishSchema } from "~/models/schemas/dishSchema";
-import type { newDish } from "~/models/types/dish.td";
+import { brandNewDishSchema } from "~/models/schemas/dishSchema";
+import type { BrandNewDish } from "~/models/types/dish.td";
 import { createDish, deleteIngredientFromDish, editDish } from "~/server/actions";
-
-export default function DishDesignerComponent({ name, recipe, ingredientList, id }: Partial<newDish>) {
-    
-    /**
-     * Manages the form for a plannedMeal
-     */
-    const { control } = useForm<newDish>({
-        resolver: zodResolver(createDishSchema),
-        values: {
-            name: name!,
-            recipe: recipe,
-            ingredientList: ingredientList,
-            id: id
-        }
-    })
+import { DevTool } from "@hookform/devtools";
+export default function DishDesignerComponent({ name, recipe, ingredients, id }: Partial<BrandNewDish>) {
 
     const measureUnits = [
         "unidad", "pizca", "chorrito", "rama", "diente",
@@ -33,23 +20,29 @@ export default function DishDesignerComponent({ name, recipe, ingredientList, id
         "libra", "onza",
     ];
 
-    const form = useForm<newDish>({
-        resolver: zodResolver(createDishSchema),
+    /**
+     * Manages the form for a plannedMeal
+     */
+    const form = useForm<BrandNewDish>({
+        resolver: zodResolver(brandNewDishSchema),
         defaultValues: {
             name: '',
             recipe: '',
+            ingredients: []
         },
         values: {
             name: name!,
             recipe: recipe!,
-            ingredientList: ingredientList,
+            ingredients: ingredients!,
             id: id
-        }
-    })
+        },
+    });
+
+    const { control } = useFormContext();
 
     const { fields, append, remove } = useFieldArray({
         control,
-        name: "ingredientList",
+        name: "ingredients",
     });
 
     const createNewDish = createDish.bind(null);
@@ -66,16 +59,19 @@ export default function DishDesignerComponent({ name, recipe, ingredientList, id
      * 
      * @param values 
      */
-    async function onSubmit(values: newDish) {
-        id ?  await editExistingDish(values) : await createNewDish(values)
+    async function onSubmit(values: BrandNewDish) {
+        console.log('Client log: ', values)
+        id ? await editExistingDish(values) : await createNewDish(values)
         form.reset();
     }
     return (
         <Form {...form}>
             <form autoComplete="off" className="flex flex-col gap-3 h-full" onSubmit={form.handleSubmit(onSubmit)}>
                 <div className="flex justify-between gap-3">
+                    <DevTool control={control} />
+                    <input name="ingredientId" type="hidden" value={23} />
                     <FormField
-                        control={form.control}
+                        control={control}
                         name="name"
                         render={({ field }) => (
                             <FormItem className="w-full">
@@ -91,7 +87,8 @@ export default function DishDesignerComponent({ name, recipe, ingredientList, id
                         type="button"
                         onClick={() =>
                             append({
-                                name: '',
+                                ingredientId: 2,
+                                ingredient: { name: '' },
                                 quantity: '',
                                 quantityUnit: '',
                             })
@@ -105,7 +102,7 @@ export default function DishDesignerComponent({ name, recipe, ingredientList, id
                 </div>
                 <div className="overflow-scroll flex flex-col gap-3">
                     <FormField
-                        control={form.control}
+                        control={control}
                         name="recipe"
                         render={({ field }) => (
                             <FormItem>
@@ -126,9 +123,9 @@ export default function DishDesignerComponent({ name, recipe, ingredientList, id
                                 <div className="flex items-center gap-3">
                                     <FormField
                                         key={field.id}
-                                        control={form.control}
+                                        control={control}
                                         defaultValue={''}
-                                        name={`ingredientList.${index}.name`}
+                                        name={`ingredients.${index}.ingredient.name`}
                                         render={({ field }) => (
                                             <FormItem className="flex w-full">
                                                 <FormControl className="flex">
@@ -138,7 +135,7 @@ export default function DishDesignerComponent({ name, recipe, ingredientList, id
                                             </FormItem>
                                         )}
                                     />
-                                    <Button className="flex gap-1" variant={'destructive'} type="button" onClick={() => deleteIngredientFromDB(id!, field.ingredientId!, index)}>
+                                    <Button className="flex gap-1" variant={'destructive'} type="button" onClick={() => deleteIngredientFromDB(id!, parseInt(field.id), index)}>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                                         </svg>
@@ -148,10 +145,10 @@ export default function DishDesignerComponent({ name, recipe, ingredientList, id
                                 <div className="flex gap-3">
                                     <FormField
                                         control={form.control}
-                                        name={`ingredientList.${index}.quantityUnit`}
+                                        name={`ingredients.${index}.quantityUnit`}
                                         render={({ field }) => (
                                             <FormItem>
-                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                <Select onValueChange={field.onChange} defaultValue={field.value?.toString()}>
                                                     <FormControl>
                                                         <SelectTrigger>
                                                             <SelectValue placeholder="Select a measure unit" />
@@ -169,7 +166,7 @@ export default function DishDesignerComponent({ name, recipe, ingredientList, id
                                         key={field.id}
                                         control={form.control}
                                         defaultValue={''}
-                                        name={`ingredientList.${index}.quantity`}
+                                        name={`ingredients.${index}.quantity`}
                                         render={({ field }) => (
                                             <FormItem className="flex w-full">
                                                 <FormControl className="flex">
