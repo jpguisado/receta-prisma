@@ -38,7 +38,7 @@ export default function DishDesignerComponent({ name, recipe, ingredients, id }:
         },
     });
 
-    const { control } = useFormContext();
+    const { control } = form;
 
     const { fields, append, remove } = useFieldArray({
         control,
