@@ -38,13 +38,22 @@ export async function createDish(data: BrandNewDish): Promise<void> {
     const { name, ingredients, recipe, } = brandNewDishSchema.parse(data);
 
     try {
-        console.log('Datos que vienen del form: ', ingredients);
         await db.dish.create({
             data: {
                 name: name,
                 recipe: recipe,
                 ingredients: {
-                    create: ingredients
+                    create: ingredients ? ingredients.map((ingredient) => {
+                        return {
+                            quantity: ingredient.quantity,
+                            quantityUnit: ingredient.quantityUnit,
+                            ingredient: {
+                                create: {
+                                    name: ingredient.ingredient.name
+                                }
+                            }
+                        }
+                    }) : undefined
                 },
             }
         })
@@ -52,30 +61,6 @@ export async function createDish(data: BrandNewDish): Promise<void> {
     } catch (error) {
         console.error(error)
     }
-
-    // if (ingredientList) {
-    //     await db.dish.create({
-    //         data: {
-    //             name: name,
-    //             recipe: recipe,
-    //             ingredients: {
-    //                 create: ingredientList.map((ingredient) => {
-    //                     return { 
-    //                         quantity: ingredient.quantity, 
-    //                         quantityUnit: ingredient.quantityUnit, 
-    //                         ingredient: { 
-    //                             create: { 
-    //                                 name: ingredient.name 
-    //                             } 
-    //                         }
-    //                     } // TODO: change this with PUT https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types/working-with-scalar-lists-arrays#setting-the-value-of-a-scalar-list
-    //                 }),
-    //             },
-    //         }
-    //     }).catch((error) => {console.log(error)})
-    // }
-
-
 }
 
 export async function editDish(data: newDish): Promise<void> {

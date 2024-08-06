@@ -68,7 +68,7 @@ export default function DishDesignerComponent({ name, recipe, ingredients, id }:
         <Form {...form}>
             <form autoComplete="off" className="flex flex-col gap-3 h-full" onSubmit={form.handleSubmit(onSubmit)}>
                 <div className="flex justify-between gap-3">
-                    <DevTool control={control} />
+                    {/* <DevTool control={control} /> */}
                     <input name="ingredientId" type="hidden" value={23} />
                     <FormField
                         control={control}

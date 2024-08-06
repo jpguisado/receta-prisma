@@ -26,7 +26,7 @@ export const editIngredientSchema = z.object({
 });
 
 export const ingredientsOnDishesSchema = z.object({
-    ingredientId: z.number(),
+    ingredientId: z.number().optional(),
     ingredient: brandNewIngredientSchema,
     quantity: z.string(),
     quantityUnit: z.string()
