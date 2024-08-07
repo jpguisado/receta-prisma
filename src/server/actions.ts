@@ -7,6 +7,9 @@ import type { BrandNewDish, Dish, newDish } from "~/models/types/dish.td";
 import type { createPlannedDay } from "~/models/types/plannedDay.td";
 import { db } from "./db";
 
+// const CreateInvoice = FormSchema.omit({ id: true, date: true });
+//amount: z.coerce.number(),
+
 export async function createMealsForWeek(data: createPlannedDay): Promise<void> {
     const { day, dishId, meal } = createPlannedDaySchema.parse(data);
     await db.plannedDay.upsert({
@@ -34,9 +37,8 @@ export async function createMealsForWeek(data: createPlannedDay): Promise<void> 
     revalidatePath('/concept-form');
 }
 
-export async function createDish(data: BrandNewDish): Promise<void> {
-    const { name, ingredients, recipe, } = brandNewDishSchema.parse(data);
-
+export async function createDish(data: BrandNewDish) {
+    const { name, ingredients, recipe } = brandNewDishSchema.parse(data);
     try {
         await db.dish.create({
             data: {
@@ -56,10 +58,11 @@ export async function createDish(data: BrandNewDish): Promise<void> {
                     }) : undefined
                 },
             }
-        })
-
+        });
     } catch (error) {
-        console.error(error)
+        return {
+            message: 'Database Error: Failed to Create Dish.',
+        };
     }
 }
 

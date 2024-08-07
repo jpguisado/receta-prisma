@@ -1,6 +1,6 @@
 'use client';
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod.js";
-import { FormProvider, useFieldArray, useForm, useFormContext } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { Button } from "~/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
@@ -9,8 +9,13 @@ import { Textarea } from "~/components/ui/textarea";
 import { brandNewDishSchema } from "~/models/schemas/dishSchema";
 import type { BrandNewDish } from "~/models/types/dish.td";
 import { createDish, deleteIngredientFromDish, editDish } from "~/server/actions";
-import { DevTool } from "@hookform/devtools";
+import { toast } from "~/components/ui/use-toast";
+import { useFormStatus } from 'react-dom'
+import { useState } from "react";
 export default function DishDesignerComponent({ name, recipe, ingredients, id }: Partial<BrandNewDish>) {
+
+    const { pending } = useFormStatus();
+    const [arrayFieldIndex, setArrayFieldIndex] = useState(0);
 
     const measureUnits = [
         "unidad", "pizca", "chorrito", "rama", "diente",
@@ -25,6 +30,7 @@ export default function DishDesignerComponent({ name, recipe, ingredients, id }:
      */
     const form = useForm<BrandNewDish>({
         resolver: zodResolver(brandNewDishSchema),
+        disabled: pending,
         defaultValues: {
             name: '',
             recipe: '',
@@ -50,9 +56,9 @@ export default function DishDesignerComponent({ name, recipe, ingredients, id }:
     const deleteIngredient = deleteIngredientFromDish.bind(null)
 
     async function deleteIngredientFromDB(id: number, ingredientId: number, index: number) {
-        console.log(id)
-        await deleteIngredient(id, ingredientId)
-        remove(index)
+        id ? '' : await deleteIngredient(id, ingredientId);
+        remove(index);
+        setArrayFieldIndex(arrayFieldIndex - 1);
     }
 
     /**
@@ -60,8 +66,12 @@ export default function DishDesignerComponent({ name, recipe, ingredients, id }:
      * @param values 
      */
     async function onSubmit(values: BrandNewDish) {
-        console.log('Client log: ', values)
-        id ? await editExistingDish(values) : await createNewDish(values)
+        id ? await editExistingDish(values) : await createNewDish(values).then(() => {
+            toast({
+                duration: 1000,
+                description: id ? 'Edición completa' : 'Plato creado',
+            })
+        });
         form.reset();
     }
     return (
@@ -85,13 +95,16 @@ export default function DishDesignerComponent({ name, recipe, ingredients, id }:
                     <Button variant={"secondary"}
                         className="flex gap-1"
                         type="button"
-                        onClick={() =>
+                        onClick={() => {
                             append({
-                                ingredientId: 2,
                                 ingredient: { name: '' },
                                 quantity: '',
                                 quantityUnit: '',
-                            })
+                            },{
+                                focusName: `ingredients.${arrayFieldIndex}.ingredient.name`
+                            }),
+                            setArrayFieldIndex(arrayFieldIndex + 1);
+                            }
                         }
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
