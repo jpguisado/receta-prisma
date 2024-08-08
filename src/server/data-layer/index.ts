@@ -16,7 +16,7 @@ export async function fetchDishList(): Promise<BrandNewDish[]> {
  * Fetch a dish with an id
  * @param id 
  */
-export async function fetchDishWithId(id: number): Promise<newDish> {
+export async function fetchDishWithId(id: number): Promise<BrandNewDish> {
     const { name, ingredients, recipe } = await db.dish.findUniqueOrThrow({
         select: {
             name: true,

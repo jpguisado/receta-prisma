@@ -11,7 +11,7 @@ export default async function EditDish({ params }: { params: { id: string }; }) 
             <div className="mb-4 text-right text-blue-600 font-bold"><Link href={'/dish-list'}>Volver a la lista</Link></div>
             <DishDesignerComponent
                 name={dish.name}
-                ingredientList={dish.ingredientList}
+                ingredients={dish.ingredients}
                 recipe={dish.recipe}
                 id={dish.id}
             />
