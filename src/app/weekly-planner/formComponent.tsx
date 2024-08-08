@@ -55,6 +55,9 @@ export default function FormularioPlanearComida({ dishList }: { dishList: BrandN
   const form = useForm<createPlannedDay>({
     resolver: zodResolver(createPlannedDaySchema),
     defaultValues: {
+      meal: undefined,
+      day: undefined,
+      dishId: undefined,
     }
   })
   /**
@@ -155,7 +158,7 @@ export default function FormularioPlanearComida({ dishList }: { dishList: BrandN
               <FormItem className="flex flex-col">
                 <Popover>
                   <PopoverTrigger asChild>
-                    <FormControl>
+                    <FormControl className="">
                       <Button
                         variant="outline"
                         role="combobox"
@@ -181,7 +184,7 @@ export default function FormularioPlanearComida({ dishList }: { dishList: BrandN
                         <CommandGroup>
                           {dishList.map((dish) => (
                             <CommandItem
-                              value={dish.id!.toString()}
+                              value={dish.name}
                               key={dish.id}
                               onSelect={() => {
                                 form.setValue("dishId", dish.id!)

@@ -8,7 +8,7 @@ import type { plannedDay } from "~/models/types/plannedDay.td";
  * @returns 
  */
 export async function fetchDishList(): Promise<BrandNewDish[]> {
-    const dishes = await db.dish.findMany({include: {ingredients: { include: {ingredient: true}}}})
+    const dishes = await db.dish.findMany({ include: { ingredients: { include: { ingredient: true } } } })
     return dishes;
 }
 
@@ -17,7 +17,7 @@ export async function fetchDishList(): Promise<BrandNewDish[]> {
  * @param id 
  */
 export async function fetchDishWithId(id: number): Promise<newDish> {
-    const {name, ingredients, recipe } = await db.dish.findUniqueOrThrow({
+    const { name, ingredients, recipe } = await db.dish.findUniqueOrThrow({
         select: {
             name: true,
             id: true,
@@ -69,11 +69,15 @@ export async function fetchComidasPlanificadas(): Promise<plannedMeal[]> {
  * @returns the days of the week
  */
 export async function fetchPlannedDays(datesOfTheWeek: Date[]): Promise<plannedDay[]> {
+    const MEALS = ['BREAKFAST', 'MIDMORNING', 'LUNCH', 'SNACK', 'DINNER'];
     const comidaPlanificada = await db.plannedDay.findMany({
         include: {
             plannedMeal: {
-                include: {
-                    dish: true
+                select: {
+                    dish: true,
+                    meal: true,
+                    dishId: true,
+                    id: true
                 }
             }
         }, where: {
@@ -82,5 +86,9 @@ export async function fetchPlannedDays(datesOfTheWeek: Date[]): Promise<plannedD
             }
         }
     })
+    
+    // Sorts meals to show them in order
+    comidaPlanificada.map((comida) => comida.plannedMeal.sort((a,b) =>  MEALS.indexOf(a.meal) - MEALS.indexOf(b.meal)))
+
     return comidaPlanificada;
 }
