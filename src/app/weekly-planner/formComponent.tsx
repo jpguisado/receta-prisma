@@ -13,7 +13,7 @@ import {
 } from "~/components/ui/form";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { cn, getWeekDates, getWeekNumber, MEALS, MONTHS } from "~/lib/utils";
-import type { Dish } from "~/models/types/dish.td";
+import type { BrandNewDish } from "~/models/types/dish.td";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "~/components/ui/command";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { useState } from "react";
@@ -22,7 +22,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { createPlannedDay } from "~/models/types/plannedDay.td";
 import { createPlannedDaySchema } from "~/models/schemas/plannedDaySchema";
 
-export default function FormularioPlanearComida({ dishList }: { dishList: Dish[] }) {
+export default function FormularioPlanearComida({ dishList }: { dishList: BrandNewDish[] }) {
 
   const [startingDate, setStartingDate] = useState(new Date());
   const searchParams = useSearchParams();
@@ -54,6 +54,8 @@ export default function FormularioPlanearComida({ dishList }: { dishList: Dish[]
    */
   const form = useForm<createPlannedDay>({
     resolver: zodResolver(createPlannedDaySchema),
+    defaultValues: {
+    }
   })
   /**
    * Handles the submission of the "comidaPlanificada" (planned meal) form.

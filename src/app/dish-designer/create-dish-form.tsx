@@ -56,14 +56,14 @@ export default function DishDesignerComponent({ name, recipe, ingredients, id }:
     const deleteIngredient = deleteIngredientFromDish.bind(null)
 
     async function deleteIngredientFromDB(id: number, ingredientId: number, index: number) {
-        id ? '' : await deleteIngredient(id, ingredientId);
+        id ? await deleteIngredient(id, ingredientId) : '';
         remove(index);
         setArrayFieldIndex(arrayFieldIndex - 1);
     }
 
     /**
-     * 
-     * @param values 
+     *
+     * @param values
      */
     async function onSubmit(values: BrandNewDish) {
         id ? await editExistingDish(values) : await createNewDish(values).then(() => {

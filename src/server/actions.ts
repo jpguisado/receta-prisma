@@ -59,6 +59,7 @@ export async function createDish(data: BrandNewDish) {
                 },
             }
         });
+        revalidatePath('/dish-list')
     } catch (error) {
         return {
             message: 'Database Error: Failed to Create Dish.',
@@ -67,7 +68,7 @@ export async function createDish(data: BrandNewDish) {
 }
 
 export async function editDish(data: newDish): Promise<void> {
-    const { id, name, ingredientList, recipe, } = createDishSchema.parse(data);
+    const { id, name, ingredients, recipe, } = brandNewDishSchema.parse(data);
     await db.dish.update({
         data: {
             name: name,
@@ -78,48 +79,50 @@ export async function editDish(data: newDish): Promise<void> {
         }
     })
 
-    // Updates each ingredient name
-    for (const ingredient of ingredientList!) {
-        if (ingredient.ingredientId) {
-            await db.ingredientsinDishes.updateMany({
-                data: {
-                    quantity: ingredient.quantity,
-                    quantityUnit: ingredient.quantityUnit,
-                },
-                where: {
-                    dishId: id,
-                    ingredientId: ingredient.ingredientId,
-                }
-            })
-        }
+    if (ingredients) {
+        // Updates each ingredient name
+        for (const ingredient of ingredients) {
+            if (ingredient.ingredientId) {
+                await db.ingredientsinDishes.updateMany({
+                    data: {
+                        quantity: ingredient.quantity,
+                        quantityUnit: ingredient.quantityUnit,
+                    },
+                    where: {
+                        dishId: id,
+                        ingredientId: ingredient.ingredientId,
+                    }
+                })
+            }
 
-        await db.ingredient.upsert({
-            where: {
-                id: ingredient.ingredientId! | undefined!
-            },
-            create: {
-                name: ingredient.name,
-                dishes: {
-                    createMany: {
-                        data: {
-                            dishId: id!,
-                            quantity: ingredient.quantity,
-                            quantityUnit: ingredient.quantityUnit
+            await db.ingredient.upsert({
+                where: {
+                    id: ingredient.ingredientId! | undefined!
+                },
+                create: {
+                    name: ingredient.ingredient.name,
+                    dishes: {
+                        createMany: {
+                            data: {
+                                dishId: id!,
+                                quantity: ingredient.quantity,
+                                quantityUnit: ingredient.quantityUnit
+                            }
                         }
                     }
-                }
-            },
-            update: {
-                name: ingredient.name,
-            },
-        })
+                },
+                update: {
+                    name: ingredient.ingredient.name,
+                },
+            })
+        }
     }
+
     revalidatePath('/dish-list/[]')
     revalidatePath('/dish-list')
 }
 
 export async function deleteIngredientFromDish(dishId: number, ingredientId: number): Promise<void> {
-    console.log(dishId, ingredientId)
     await db.ingredientsinDishes.deleteMany({
         where: {
             dishId: dishId,
