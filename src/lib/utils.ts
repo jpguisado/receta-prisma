@@ -30,6 +30,8 @@ export const MEALS = [
 ];
 export const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
+export const WEEK_DAYS = ['DO', 'LU', 'MA', 'MI', 'JU','VI','SA'];
+
 /**
  * Gets the number of a week given a date
  * @param dateToCompare the date whose week we want to know

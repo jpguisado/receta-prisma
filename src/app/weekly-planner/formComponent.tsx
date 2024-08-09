@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
-import { cn, getWeekDates, getWeekNumber, MEALS, MONTHS } from "~/lib/utils";
+import { cn, getWeekDates, getWeekNumber, MEALS, MONTHS, WEEK_DAYS } from "~/lib/utils";
 import type { BrandNewDish } from "~/models/types/dish.td";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "~/components/ui/command";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
@@ -82,7 +82,7 @@ export default function FormularioPlanearComida({ dishList }: { dishList: BrandN
 
   return (
     <>
-      <div>{MONTHS[startingDate.getMonth()]}</div>
+      <div>{weekToBePrinted[0]?.getDate()} - {weekToBePrinted[6]?.getDate()} {MONTHS[startingDate.getMonth()]}</div>
       <div className="text-2xl font-medium">Semana {getWeekNumber(startingDate)}</div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -104,7 +104,7 @@ export default function FormularioPlanearComida({ dishList }: { dishList: BrandN
                       return (
                         <FormItem key={day.getDate().toString()} className="flex flex-col items-center">
                           <FormLabel className="font-normal">
-                            {day.getDate()}
+                            {WEEK_DAYS[day.getDay()]}
                           </FormLabel>
                           <FormControl>
                             <RadioGroupItem {...form.register("day", { valueAsDate: true })} value={day.toString()} className={`${day.getDate() === new Date().getDate() ? 'ring-2 ring-green-500' : ''}`} />

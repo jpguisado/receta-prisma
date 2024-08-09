@@ -5,6 +5,7 @@ import FormularioPlanearComida from "./formComponent";
 import { DayComponent } from "./components/Day";
 import { getWeekDates } from "~/lib/utils";
 import { Suspense } from "react";
+import { ScrollArea } from "~/components/ui/scroll-area";
 
 export default async function Formulario({ searchParams }: { searchParams: { dateInMilis?: string, page?: string; }; }) {
 
@@ -37,15 +38,15 @@ export default async function Formulario({ searchParams }: { searchParams: { dat
                 dishList={dishList}
             />
             <Suspense fallback={<p>Loading feed...</p>}>
-                <div className="h-[55%] overflow-scroll">
-                    {plannedDaysOfWeek.map((day) => {
-                        return <DayComponent
-                            day={day.day}
-                            plannedMeal={day.plannedMeal}
-                            key={day.id}
-                            id={day.id}
-                        />
-                    })}
+                <div className="h-[55%] mt-5">
+                        {plannedDaysOfWeek.map((day) => {
+                            return <DayComponent
+                                day={day.day}
+                                plannedMeal={day.plannedMeal}
+                                key={day.id}
+                                id={day.id}
+                            />
+                        })}
                 </div>
             </Suspense>
         </>
