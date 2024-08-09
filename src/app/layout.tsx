@@ -32,7 +32,7 @@ export default function RootLayout({
           <meta property="og:image:height" content="<generated>" />
         </head>
         <body className={`h-dvh flex flex-col justify-between font-sans ${inter.variable}`}>
-          <div className="h-[90%] p-6">
+          <div className="overflow-x-scroll h-[90%] p-6">
             {children}
           </div>
           <footer className='h-[10%] flex items-center text-center bg-slate-50'>
