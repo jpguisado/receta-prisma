@@ -1,6 +1,7 @@
 import { WEEK_DAYS } from "~/lib/utils"
 import { MealComponent } from "./Meal"
 import type { plannedDay } from "~/models/types/plannedDay.td"
+import Link from "next/link"
 
 export const DayComponent = ( comidas: plannedDay) => {
     return (
@@ -11,10 +12,12 @@ export const DayComponent = ( comidas: plannedDay) => {
                     return <MealComponent key={comida.id} meal={comida.meal} dish={comida.dish} />
                 })}
             </div>
-            <div className="font-black border-l-[1px] w-10 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="24"><path d="M80-240v-480h80v480H80Zm560 0-57-56 144-144H240v-80h487L584-664l56-56 240 240-240 240Z" />
-                </svg>
-            </div>
+            <Link href={'weekly-planner/1'}>
+                <div className="font-black border-l-[1px] w-10 h-full flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="24"><path d="M80-240v-480h80v480H80Zm560 0-57-56 144-144H240v-80h487L584-664l56-56 240 240-240 240Z" />
+                    </svg>
+                </div>
+            </Link>
         </div>
     )
 }

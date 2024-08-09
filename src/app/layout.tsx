@@ -31,7 +31,7 @@ export default function RootLayout({
           <meta property="og:image:width" content="<generated>" />
           <meta property="og:image:height" content="<generated>" />
         </head>
-        <body className={`h-screen flex flex-col justify-between font-sans ${inter.variable}`}>
+        <body className={`h-dvh flex flex-col justify-between font-sans ${inter.variable}`}>
           <div className="h-[90%] p-6">
             {children}
           </div>

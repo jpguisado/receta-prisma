@@ -5,7 +5,6 @@ import FormularioPlanearComida from "./formComponent";
 import { DayComponent } from "./components/Day";
 import { getWeekDates } from "~/lib/utils";
 import { Suspense } from "react";
-import { ScrollArea } from "~/components/ui/scroll-area";
 
 export default async function Formulario({ searchParams }: { searchParams: { dateInMilis?: string, page?: string; }; }) {
 
