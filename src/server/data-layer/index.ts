@@ -23,11 +23,8 @@ export async function fetchDishWithId(id: number): Promise<BrandNewDish> {
             id: true,
             recipe: true,
             ingredients: {
-                select: {
-                    ingredient: true,
-                    quantity: true,
-                    quantityUnit: true,
-                    ingredientId: true,
+                include: {
+                    ingredient: true
                 }
             },
         },
@@ -43,9 +40,9 @@ export async function fetchDishWithId(id: number): Promise<BrandNewDish> {
             'ingredientId': item.ingredient.id,
         };
     })
-    const dish: newDish = {
+    const dish: BrandNewDish = {
         name: name,
-        ingredientList: newDishList,
+        ingredients: ingredients,
         recipe: recipe,
         id: id
     }

@@ -13,14 +13,14 @@ export const columns: ColumnDef<Dish>[] = [
     accessorKey: "name",
     header: "Name",
   },
-  {
-    accessorKey: "Group",
-    header: "Group",
-  },
-  {
-    accessorKey: "Ingredients",
-    header: "Ingredients",
-  },
+  // {
+  //   accessorKey: "Group",
+  //   header: "Group",
+  // },
+  // {
+  //   accessorKey: "Ingredients",
+  //   header: "Ingredients",
+  // },
   {
     id: "actions",
     cell: ({ row }) => {

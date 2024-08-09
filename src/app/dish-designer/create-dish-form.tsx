@@ -32,16 +32,17 @@ export default function DishDesignerComponent({ name, recipe, ingredients, id }:
         resolver: zodResolver(brandNewDishSchema),
         disabled: pending,
         defaultValues: {
-            name: '',
-            recipe: '',
-            ingredients: []
+            name: name ?? '',
+            recipe: recipe ?? '',
+            ingredients: ingredients ?? [],
+            id: id ?? undefined
         },
-        values: {
-            name: name!,
-            recipe: recipe!,
-            ingredients: ingredients!,
-            id: id
-        },
+        // values: {
+        //     name: name!,
+        //     recipe: recipe!,
+        //     ingredients: ingredients!,
+        //     id: id
+        // },
     });
 
     const { control } = form;
@@ -56,6 +57,7 @@ export default function DishDesignerComponent({ name, recipe, ingredients, id }:
     const deleteIngredient = deleteIngredientFromDish.bind(null)
 
     async function deleteIngredientFromDB(id: number, ingredientId: number, index: number) {
+        console.log(id, ingredientId, index)
         id ? await deleteIngredient(id, ingredientId) : '';
         remove(index);
         setArrayFieldIndex(arrayFieldIndex - 1);
@@ -66,20 +68,29 @@ export default function DishDesignerComponent({ name, recipe, ingredients, id }:
      * @param values
      */
     async function onSubmit(values: BrandNewDish) {
-        id ? await editExistingDish(values) : await createNewDish(values).then(() => {
+        id ? await editExistingDish(values).then(() => {
             toast({
-                duration: 1000,
-                description: id ? 'Edición completa' : 'Plato creado',
+                className: 'bg-black text-white',
+                duration: 2000,
+                description: 'Edición completa'
             })
-        });
-        form.reset();
+        })
+            :
+            await createNewDish(values)
+                .then(() => {
+                    toast({
+                        className: 'bg-black text-white',
+                        duration: 2000,
+                        description: 'Plato creado',
+                    })
+                    form.reset();
+                });
     }
     return (
         <Form {...form}>
             <form autoComplete="off" className="flex flex-col gap-3 h-full" onSubmit={form.handleSubmit(onSubmit)}>
                 <div className="flex justify-between gap-3">
                     {/* <DevTool control={control} /> */}
-                    <input name="ingredientId" type="hidden" value={23} />
                     <FormField
                         control={control}
                         name="name"
@@ -97,14 +108,14 @@ export default function DishDesignerComponent({ name, recipe, ingredients, id }:
                         type="button"
                         onClick={() => {
                             append({
-                                ingredient: { name: '' },
+                                ingredient: { name: '', id: undefined },
                                 quantity: '',
                                 quantityUnit: '',
-                            },{
+                            }, {
                                 focusName: `ingredients.${arrayFieldIndex}.ingredient.name`
                             }),
-                            setArrayFieldIndex(arrayFieldIndex + 1);
-                            }
+                                setArrayFieldIndex(arrayFieldIndex + 1);
+                        }
                         }
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
@@ -148,12 +159,12 @@ export default function DishDesignerComponent({ name, recipe, ingredients, id }:
                                             </FormItem>
                                         )}
                                     />
-                                    <Button className="flex gap-1" variant={'destructive'} type="button" onClick={() => deleteIngredientFromDB(id!, parseInt(field.id), index)}>
+                                    {/* <Button className="flex gap-1" variant={'destructive'} type="button" onClick={() => deleteIngredientFromDB(id!, ingredients[index].ingredientId, index)}>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                                         </svg>
                                         Borrar
-                                    </Button>
+                                    </Button> */}
                                 </div>
                                 <div className="flex gap-3">
                                     <FormField
