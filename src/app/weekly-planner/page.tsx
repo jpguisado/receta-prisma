@@ -4,7 +4,6 @@ import { fetchDishList, fetchPlannedDays } from "~/server/data-layer";
 import FormularioPlanearComida from "./formComponent";
 import { DayComponent } from "./components/Day";
 import { getWeekDates } from "~/lib/utils";
-import { Suspense } from "react";
 
 export default async function Formulario({ searchParams }: { searchParams: { dateInMilis?: string, page?: string; }; }) {
 

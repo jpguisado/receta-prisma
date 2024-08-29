@@ -1,4 +1,4 @@
-import type { BrandNewDish, Dish, newDish } from "~/models/types/dish.td";
+import type { BrandNewDish } from "~/models/types/dish.td";
 import { db } from "../db";
 import type { plannedMeal } from "~/models/types/plannedMeal.td";
 import type { plannedDay } from "~/models/types/plannedDay.td";
@@ -10,6 +10,32 @@ import type { plannedDay } from "~/models/types/plannedDay.td";
 export async function fetchDishList(): Promise<BrandNewDish[]> {
     const dishes = await db.dish.findMany({ include: { ingredients: { include: { ingredient: true } } } })
     return dishes;
+}
+
+/**
+ * Gets dishes of a day
+ * @returns Dishes and planned days
+ */
+export async function fetchTodaysDish(): Promise<plannedMeal[]> {
+    return await db.plannedMeal.findMany({
+        where: {
+            plannedDay: {
+                day: new Date()
+            }
+        },
+        include: {
+            plannedDay: true,
+            dish: true
+        }
+    })
+}
+
+export async function countDishes(): Promise<number> {
+    return await db.dish.count();
+}
+
+export async function countPlannedMeals(): Promise<number> {
+    return await db.plannedMeal.count();
 }
 
 /**
@@ -32,14 +58,7 @@ export async function fetchDishWithId(id: number): Promise<BrandNewDish> {
             id: id
         }
     });
-    const newDishList = ingredients.flatMap((item) => {
-        return {
-            'quantityUnit': item.quantityUnit,
-            'quantity': item.quantity,
-            'name': item.ingredient.name,
-            'ingredientId': item.ingredient.id,
-        };
-    })
+
     const dish: BrandNewDish = {
         name: name,
         ingredients: ingredients,
