@@ -4,7 +4,6 @@ import { Suspense, useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { fetchDishList } from "~/server/data-layer";
 import { BrandNewDish } from "~/models/types/dish.td";
-import { ShoppingDay } from "./client";
 
 export default async function Shopping() {
   
@@ -21,11 +20,8 @@ export default async function Shopping() {
 
   return (
     <>
-    <p>Hello</p>
-    <p>This is the main part of shopping list</p>
-    <Suspense fallback={'...cargando'}>
-      <ShoppingDay listaPlatos={listaPlatos}/>
-    </Suspense>
+      <p>Hello</p>
+      <p>This is the main part of shopping list</p>
     </>
   )
 }
