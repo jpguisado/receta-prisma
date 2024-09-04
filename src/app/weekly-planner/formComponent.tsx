@@ -16,7 +16,7 @@ import { cn, getWeekDates, getWeekNumber, MEALS, MONTHS, WEEK_DAYS } from "~/lib
 import type { BrandNewDish } from "~/models/types/dish.td";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "~/components/ui/command";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { createMealsForWeek } from "~/server/actions";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { createPlannedDay } from "~/models/types/plannedDay.td";
@@ -151,65 +151,67 @@ export default function FormularioPlanearComida({ dishList }: { dishList: BrandN
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="dishId"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl className="">
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        className={cn(
-                          "w-full justify-between",
-                          !field.value && "text-muted-foreground"
-                        )}
-                      >
-                        {field.value
-                          ? dishList.find(
-                            (dish) => dish.id === field.value
-                          )?.name
-                          : "Selecciona plato"}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-[200px] p-0">
-                    <Command>
-                      <CommandInput placeholder="Search dish..." />
-                      <CommandList>
-                        <CommandEmpty>No hay ningún plato</CommandEmpty>
-                        <CommandGroup>
-                          {dishList.map((dish) => (
-                            <CommandItem
-                              value={dish.name}
-                              key={dish.id}
-                              onSelect={() => {
-                                form.setValue("dishId", dish.id!)
-                              }}
-                            >
-                              <Check
-                                className={cn(
-                                  "mr-2 h-4 w-4",
-                                  dish.id === field.value
-                                    ? "opacity-100"
-                                    : "opacity-0"
-                                )}
-                              />
-                              {dish.name}
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <Suspense>
+            <FormField
+              control={form.control}
+              name="dishId"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl className="">
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className={cn(
+                            "w-full justify-between",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value
+                            ? dishList.find(
+                              (dish) => dish.id === field.value
+                            )?.name
+                            : "Selecciona plato"}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0">
+                      <Command>
+                        <CommandInput placeholder="Search dish..." />
+                        <CommandList>
+                          <CommandEmpty>No hay ningún plato</CommandEmpty>
+                          <CommandGroup>
+                            {dishList.map((dish) => (
+                              <CommandItem
+                                value={dish.name}
+                                key={dish.id}
+                                onSelect={() => {
+                                  form.setValue("dishId", dish.id!)
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    dish.id === field.value
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                                {dish.name}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </Suspense>
           <Button className="w-full" type="submit">Enviar!</Button>
         </form>
       </Form>

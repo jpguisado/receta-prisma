@@ -4,6 +4,8 @@ import { Inter } from "next/font/google";
 import Link from "next/link";
 import Providers from "./providers";
 import { Toaster } from "~/components/ui/toaster";
+import { Suspense } from "react";
+import { Skeleton } from "~/components/ui/skeleton";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -33,7 +35,16 @@ export default function RootLayout({
         </head>
         <body className={`h-dvh flex flex-col justify-between font-sans ${inter.variable}`}>
           <div className="overflow-x-scroll h-[90%] p-6">
-            {children}
+            <Suspense fallback={
+              <div className="flex flex-col gap-3">
+                <Skeleton className="w-full h-[40px] rounded-md" />
+                <Skeleton className="w-full h-[30px] rounded-md" />
+                <Skeleton className="w-full h-[100px] rounded-md" />
+                <Skeleton className="w-full h-[500px] rounded-md" />
+              </div>
+            }>
+              {children}
+            </Suspense>
           </div>
           <footer className='h-[10%] flex items-center text-center bg-slate-50'>
             <div className='w-full'>

@@ -5,6 +5,10 @@
 await import("./src/env.js");
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const nextConfig = {
+    experimental: {
+        ppr: 'incremental',
+    },
+};
 
-export default config;
+export default nextConfig;

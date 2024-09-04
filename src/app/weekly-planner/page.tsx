@@ -1,9 +1,8 @@
-'use server';
-
 import { fetchDishList, fetchPlannedDays } from "~/server/data-layer";
 import FormularioPlanearComida from "./formComponent";
 import { DayComponent } from "./components/Day";
 import { getWeekDates } from "~/lib/utils";
+import { Suspense } from "react";
 
 export default async function Formulario({ searchParams }: { searchParams: { dateInMilis?: string, page?: string; }; }) {
 
@@ -30,20 +29,27 @@ export default async function Formulario({ searchParams }: { searchParams: { dat
      */
     const plannedDaysOfWeek = await fetchPlannedDays(datesOfWeekToBePrinted);
 
+    // Initiate both requests in parallel
+    const [list, days] = await Promise.all([dishList, plannedDaysOfWeek])
+
     return (
         <>
             <FormularioPlanearComida
-                dishList={dishList}
+                dishList={list}
             />
             <div className="overflow-hidden mt-5">
-                    {plannedDaysOfWeek.map((day) => {
-                        return <DayComponent
-                            day={day.day}
-                            plannedMeal={day.plannedMeal}
-                            key={day.id}
-                            id={day.id}
-                        />
-                    })}
+                <Suspense fallback={<div>While we render ...</div>}>
+                        {days.map((day) => {
+                            return (
+                                <DayComponent
+                                    day={day.day}
+                                    plannedMeal={day.plannedMeal}
+                                    key={day.id}
+                                    id={day.id}
+                                />
+                            )
+                        })}
+                </Suspense>
             </div>
         </>
     )
