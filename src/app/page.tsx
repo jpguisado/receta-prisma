@@ -7,8 +7,6 @@ import {
   fetchTodaysDish,
 } from "~/server/data-layer";
 
-export const experimental_ppr = true;
-
 export default async function HomePage() {
 
     /**
