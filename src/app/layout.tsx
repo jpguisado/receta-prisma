@@ -6,6 +6,7 @@ import Providers from "./providers";
 import { Toaster } from "~/components/ui/toaster";
 import { Suspense } from "react";
 import { Skeleton } from "~/components/ui/skeleton";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,6 +26,7 @@ export default function RootLayout({
 }) {
   return (
     <Providers>
+      <SpeedInsights/>
       <html lang="es">
         <head>
           <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1" />

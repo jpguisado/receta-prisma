@@ -37,20 +37,20 @@ export default async function Formulario({ searchParams }: { searchParams: { dat
             <FormularioPlanearComida
                 dishList={list}
             />
+            <Suspense fallback={<div className="text-2xl red-800">...Loading</div>}>
             <div className="overflow-hidden mt-5">
-                <Suspense fallback={<div>While we render ...</div>}>
                         {days.map((day) => {
                             return (
                                 <DayComponent
-                                    day={day.day}
-                                    plannedMeal={day.plannedMeal}
-                                    key={day.id}
-                                    id={day.id}
+                                day={day.day}
+                                plannedMeal={day.plannedMeal}
+                                key={day.id}
+                                id={day.id}
                                 />
                             )
                         })}
-                </Suspense>
             </div>
+            </Suspense>
         </>
     )
 }
