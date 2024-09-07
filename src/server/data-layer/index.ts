@@ -108,3 +108,19 @@ export async function fetchPlannedDays(datesOfTheWeek: Date[]): Promise<plannedD
 
     return comidaPlanificada;
 }
+
+/**
+ * Gets all the meals of a day
+ * @param plannedDayId ID of the day to be returned
+ * @returns Meals of passed day
+ */
+export async function fetchMealsOfADay(plannedDayId : number) {
+    return await db.plannedMeal.findMany({
+        where: {
+            plannedDayId: plannedDayId
+        }, 
+        include: {
+            dish: true
+        }
+    })
+}
