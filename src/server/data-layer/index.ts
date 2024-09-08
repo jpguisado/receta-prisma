@@ -100,6 +100,8 @@ export async function fetchPlannedDays(datesOfTheWeek: Date[]): Promise<plannedD
             day: {
                 in: datesOfTheWeek
             }
+        }, orderBy: {
+            day: "asc"
         }
     })
     
