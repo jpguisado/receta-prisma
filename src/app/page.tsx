@@ -9,7 +9,7 @@ import {
 
 export default async function HomePage() {
 
-    /**
+  /**
    * Gets planned days of the referenced week
    */
   const todaysMeals = await fetchTodaysDish();

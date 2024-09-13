@@ -13,21 +13,30 @@ export async function fetchDishList(): Promise<BrandNewDish[]> {
 }
 
 /**
- * Gets dishes of a day
- * @returns Dishes and planned days
+ * Obtiene los platos del día actual
+ * @returns Platos y días planificados para hoy
  */
 export async function fetchTodaysDish(): Promise<plannedMeal[]> {
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0); // Establece la hora a medianoche
+
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
     return await db.plannedMeal.findMany({
         where: {
             plannedDay: {
-                day: new Date()
+                day: {
+                    gte: today,
+                    lt: tomorrow
+                }
             }
         },
         include: {
             plannedDay: true,
             dish: true
         }
-    })
+    });
 }
 
 export async function countDishes(): Promise<number> {
@@ -100,6 +109,8 @@ export async function fetchPlannedDays(datesOfTheWeek: Date[]): Promise<plannedD
             day: {
                 in: datesOfTheWeek
             }
+        }, orderBy: {
+            day: "asc"
         }
     })
     
