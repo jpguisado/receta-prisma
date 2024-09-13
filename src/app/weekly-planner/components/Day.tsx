@@ -8,8 +8,8 @@ export const DayComponent = ( comidas: plannedDay) => {
         <div className="border-[1px] mb-3 h-20 rounded-md flex justify-between">
             <div className="font-black border-r-[1px] w-10 flex items-center justify-center">{WEEK_DAYS[comidas.day.getDay()]}</div>
             <div className="flex w-full justify-between overflow-x-scroll gap-1">
-                    {comidas.plannedMeal.map((comida) => {
-                        return <MealComponent key={comida.id} meal={comida.meal} dish={comida.dish} />
+                    {comidas.plannedMeal.map(({id, meal, dish}) => {
+                        return <MealComponent key={id} meal={meal} dish={dish} />
                     })}
             </div>
             <Link href={`weekly-planner/${comidas.id}`}>
