@@ -6,17 +6,16 @@ import Providers from "./providers";
 import { Toaster } from "~/components/ui/toaster";
 import { Suspense } from "react";
 import { Skeleton } from "~/components/ui/skeleton";
-import { SpeedInsights } from "@vercel/speed-insights/next"
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
+// const inter = Inter({
+//   subsets: ["latin"],
+//   variable: "--font-sans",
+// });
 
 export const metadata = {
   title: "Recetario",
   description: "Keep track of your weekly meals",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  // icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
 export default function RootLayout({
@@ -29,12 +28,12 @@ export default function RootLayout({
       <html lang="es">
         <head>
           <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1" />
-          <meta property="og:image" content="<generated>" />
+          {/* <meta property="og:image" content="<generated>" />
           <meta property="og:image:type" content="<generated>" />
           <meta property="og:image:width" content="<generated>" />
-          <meta property="og:image:height" content="<generated>" />
+          <meta property="og:image:height" content="<generated>" /> */}
         </head>
-        <body className={`h-dvh flex flex-col justify-between font-sans ${inter.variable}`}>
+        <body className={`h-dvh flex flex-col justify-between font-sans`}>
           <div className="overflow-x-scroll h-[90%] p-6">
             <Suspense fallback={
               <div className="flex flex-col gap-3">

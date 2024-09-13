@@ -83,7 +83,7 @@ export default function FormularioPlanearComida({ dishList }: { dishList: BrandN
   return (
     <>
       <div>{weekToBePrinted[0]?.getDate()} - {weekToBePrinted[6]?.getDate()} {MONTHS[startingDate.getMonth()]}</div>
-      <div className="text-2xl font-medium">Semana {getWeekNumber(startingDate)}</div>
+      {/* <div className="text-2xl font-medium">Semana {getWeekNumber(startingDate)}</div> */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
