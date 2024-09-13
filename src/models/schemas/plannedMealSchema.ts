@@ -7,3 +7,9 @@ export const plannedMealSchema = z.object({
     dish: dishSchema,
     meal: mealSchema,
 })
+
+export const plannedMealSchemaBulk = z.object({
+    id: z.number(),
+    dish: dishSchema,
+    meal: mealSchema,
+})

@@ -7,29 +7,17 @@ import { Suspense } from "react";
 export default async function Formulario({ searchParams }: { searchParams: { dateInMilis?: string, page?: string; }; }) {
 
     /**
-     * Fetch dish list
-     */
-    const dishList = await fetchDishList();
-
-    /**
      * Gets the date from Search Params or current date
      * @returns calendar starting date
      */
     const getCalendarStartDate = () => 
         searchParams.dateInMilis ? new Date(parseInt(searchParams.dateInMilis, 10)) : new Date();
 
-    /**
-     * Gets dates of the referenced week
-     */
     const datesOfWeekToBePrinted = getWeekDates(getCalendarStartDate());
 
-    /**
-     * Gets planned days of the referenced week
-     */
-    const plannedDaysOfWeek = await fetchPlannedDays(datesOfWeekToBePrinted);
-
     // Initiate both requests in parallel
-    const [list, days] = await Promise.all([dishList, plannedDaysOfWeek])
+    const [list, days] = await Promise.all([
+        fetchDishList(), fetchPlannedDays(datesOfWeekToBePrinted)])
 
     return (
         <>

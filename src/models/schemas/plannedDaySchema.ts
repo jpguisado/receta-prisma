@@ -8,6 +8,12 @@ export const plannedDaySchema = z.object({
     plannedMeal: z.lazy(() => plannedMealSchema.array()),
 });
 
+export const plannedDaySchemaEditDishes = z.object({
+    id: z.number().optional(),
+    day: z.date().optional(),
+    plannedMeal: z.lazy(() => plannedMealSchema.array()).optional(),
+});
+
 export const createPlannedDaySchema = z.object({
     day: z.date(),
     meal: mealSchema,
