@@ -1,7 +1,7 @@
 'use client';
-import { useForm } from "react-hook-form"
+import { useForm, useFormState } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Check, ChevronLeft, ChevronRight, ChevronsUpDown, SaveIcon } from "lucide-react"
+import { Check, ChevronLeft, ChevronRight, ChevronsUpDown, Loader2, SaveIcon } from "lucide-react"
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -60,6 +60,10 @@ export default function FormularioPlanearComida({ dishList }: { dishList: BrandN
       dishId: undefined,
     }
   })
+
+  const { control } = form;
+
+  const { isSubmitting } = useFormState({ control });
   /**
    * Handles the submission of the "comidaPlanificada" (planned meal) form.
    * 
@@ -212,9 +216,18 @@ export default function FormularioPlanearComida({ dishList }: { dishList: BrandN
               )}
             />
           </Suspense>
-          <Button className="w-full flex gap-1" type="submit">
-            <SaveIcon size={18} />
-            Enviar
+          <Button aria-disabled={isSubmitting} disabled={isSubmitting} className="w-full flex gap-1" type="submit">
+            {!isSubmitting ?
+              <>
+                <SaveIcon size={18} />
+                Guardar
+              </>
+              :
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Guardando
+              </>
+            }
           </Button>
         </form>
       </Form>
