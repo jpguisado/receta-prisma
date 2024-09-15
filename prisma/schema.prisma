@@ -12,6 +12,7 @@ model Dish {
     name String
     ingredients IngredientsinDishes[]
     plannedMeal plannedMeal[]
+    kcal String @default("")
     recipe String @default("")
 }
 

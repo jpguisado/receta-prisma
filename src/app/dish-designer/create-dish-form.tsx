@@ -11,6 +11,7 @@ import type { BrandNewDish } from "~/models/types/dish.td";
 import { createDish, deleteIngredientFromDish, editDish } from "~/server/actions";
 import { toast } from "~/components/ui/use-toast";
 import { useState } from "react";
+import { Loader2, SaveIcon } from "lucide-react";
 export default function DishDesignerComponent({ name, recipe, ingredients, id }: Partial<BrandNewDish>) {
     const [arrayFieldIndex, setArrayFieldIndex] = useState(0);
 
@@ -30,6 +31,7 @@ export default function DishDesignerComponent({ name, recipe, ingredients, id }:
         defaultValues: {
             name: name ?? '',
             recipe: recipe ?? '',
+            kcal: '',
             ingredients: ingredients ?? [],
             id: id ?? undefined
         },
@@ -40,7 +42,7 @@ export default function DishDesignerComponent({ name, recipe, ingredients, id }:
         control,
         name: "ingredients",
     });
-    const { isSubmitting } = useFormState({control});
+    const { isSubmitting } = useFormState({ control });
 
     const createNewDish = createDish.bind(null);
     const editExistingDish = editDish.bind(null);
@@ -88,6 +90,18 @@ export default function DishDesignerComponent({ name, recipe, ingredients, id }:
                             <FormItem className="w-full">
                                 <FormControl>
                                     <Input className="text-lg" placeholder="Dish name" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={control}
+                        name="kcal"
+                        render={({ field }) => (
+                            <FormItem className="w-full">
+                                <FormControl>
+                                    <Input className="text-lg" placeholder="kcal" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -198,16 +212,12 @@ export default function DishDesignerComponent({ name, recipe, ingredients, id }:
                 <Button aria-disabled={isSubmitting} disabled={isSubmitting} type="submit" className="gap-1" variant={"default"}>
                     {!isSubmitting ?
                         <>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
-                            </svg>
+                            <SaveIcon size={18} />
                             Guardar receta
                         </>
                         :
                         <>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M10.05 4.575a1.575 1.575 0 1 0-3.15 0v3m3.15-3v-1.5a1.575 1.575 0 0 1 3.15 0v1.5m-3.15 0 .075 5.925m3.075.75V4.575m0 0a1.575 1.575 0 0 1 3.15 0V15M6.9 7.575a1.575 1.575 0 1 0-3.15 0v8.175a6.75 6.75 0 0 0 6.75 6.75h2.018a5.25 5.25 0 0 0 3.712-1.538l1.732-1.732a5.25 5.25 0 0 0 1.538-3.712l.003-2.024a.668.668 0 0 1 .198-.471 1.575 1.575 0 1 0-2.228-2.228 3.818 3.818 0 0 0-1.12 2.687M6.9 7.575V12m6.27 4.318A4.49 4.49 0 0 1 16.35 15m.002 0h-.002" />
-                            </svg>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                             Guardando
                         </>
                     }

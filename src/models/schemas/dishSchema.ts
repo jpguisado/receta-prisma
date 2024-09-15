@@ -12,6 +12,7 @@ export const createDishSchema = z.object({
     id: z.number().optional(),
     recipe: z.string().optional(),
     name: z.string().min(1),
+    kcal: z.string().optional(),
     ingredientList: createIngredientSchema.array().optional()
 });
 
@@ -19,6 +20,7 @@ export const editDishSchema = z.object({
     id: z.number(),
     recipe: z.string().optional(),
     name: z.string().min(1),
+    kcal: z.string().optional(),
     ingredientList: editIngredientSchema.array().optional()
 });
 
@@ -26,5 +28,6 @@ export const brandNewDishSchema = z.object({
     id: z.number().optional(),
     name: z.string().min(1),
     recipe: z.string().optional(),
+    kcal: z.string().optional(),
     ingredients: ingredientsOnDishesSchema.array().optional()
 });

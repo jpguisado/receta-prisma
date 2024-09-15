@@ -89,7 +89,7 @@ export async function fetchComidasPlanificadas(): Promise<plannedMeal[]> {
 }
 
 /**
- * Gets all the dates of a week, including meals an dishes.
+ * Gets all the planned days of a week, including meals an dishes.
  * @param datesOfTheWeek An array containing dates to filter
  * @returns the days of the week
  */

@@ -1,7 +1,7 @@
 'use client';
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Check, ChevronLeft, ChevronRight, ChevronsUpDown } from "lucide-react"
+import { Check, ChevronLeft, ChevronRight, ChevronsUpDown, SaveIcon } from "lucide-react"
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -212,7 +212,10 @@ export default function FormularioPlanearComida({ dishList }: { dishList: BrandN
               )}
             />
           </Suspense>
-          <Button className="w-full" type="submit">Enviar!</Button>
+          <Button className="w-full flex gap-1" type="submit">
+            <SaveIcon size={18} />
+            Enviar
+          </Button>
         </form>
       </Form>
     </>

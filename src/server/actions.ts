@@ -38,12 +38,13 @@ export async function createMealsForWeek(data: createPlannedDay): Promise<void> 
 }
 
 export async function createDish(data: BrandNewDish) {
-    const { name, ingredients, recipe } = brandNewDishSchema.parse(data);
+    const { name, ingredients, recipe, kcal } = brandNewDishSchema.parse(data);
     try {
         await db.dish.create({
             data: {
                 name: name,
                 recipe: recipe,
+                kcal: kcal,
                 ingredients: {
                     create: ingredients ? ingredients.map((ingredient) => {
                         return {
