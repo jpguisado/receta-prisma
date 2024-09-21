@@ -3,6 +3,7 @@ import FormularioPlanearComida from "./formComponent";
 import { DayComponent } from "./components/Day";
 import { getWeekDates } from "~/lib/utils";
 import { Suspense } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 
 export default async function Formulario({ searchParams }: { searchParams: { dateInMilis?: string, page?: string; }; }) {
 
@@ -10,7 +11,7 @@ export default async function Formulario({ searchParams }: { searchParams: { dat
      * Gets the date from Search Params or current date
      * @returns calendar starting date
      */
-    const getCalendarStartDate = () => 
+    const getCalendarStartDate = () =>
         searchParams.dateInMilis ? new Date(parseInt(searchParams.dateInMilis, 10)) : new Date();
 
     const datesOfWeekToBePrinted = getWeekDates(getCalendarStartDate());
@@ -20,13 +21,19 @@ export default async function Formulario({ searchParams }: { searchParams: { dat
         fetchDishList(), fetchPlannedDays(datesOfWeekToBePrinted)])
 
     return (
-        <>
-            <FormularioPlanearComida
-                dishList={list}
-            />
-            <Suspense fallback={<div className="text-2xl text-red-800">...Loading</div>}>
-            <div className="overflow-hidden mt-5">
-            {days.map(({ id, day, plannedMeal }) => (
+        <Tabs defaultValue="account" className="w-full">
+            <TabsList className="w-full">
+                <TabsTrigger className="w-full" value="account">Planificar</TabsTrigger>
+                <TabsTrigger className="w-full" value="password">Ver</TabsTrigger>
+            </TabsList>
+            <TabsContent value="account">
+                <FormularioPlanearComida
+                    dishList={list}
+                />
+            </TabsContent>
+            <TabsContent value="password">
+                <div className="overflow-hidden mt-5">
+                    {days.map(({ id, day, plannedMeal }) => (
                         <DayComponent
                             key={id}
                             id={id}
@@ -34,8 +41,8 @@ export default async function Formulario({ searchParams }: { searchParams: { dat
                             plannedMeal={plannedMeal}
                         />
                     ))}
-            </div>
-            </Suspense>
-        </>
+                </div>
+            </TabsContent>
+        </Tabs>
     )
 }

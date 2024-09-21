@@ -16,8 +16,8 @@ export async function fetchDishList(): Promise<BrandNewDish[]> {
  * Obtiene los platos del día actual
  * @returns Platos y días planificados para hoy
  */
-export async function fetchTodaysDish(): Promise<plannedMeal[]> {
-    const today = new Date();
+export async function fetchTodaysDish(date: Date): Promise<plannedMeal[]> {
+    const today = date;
     today.setUTCHours(0, 0, 0, 0); // Establece la hora a medianoche
 
     const tomorrow = new Date(today);
