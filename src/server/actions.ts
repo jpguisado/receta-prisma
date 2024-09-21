@@ -35,6 +35,7 @@ export async function createMealsForWeek(data: createPlannedDay): Promise<void> 
         }
     })
     revalidatePath('/concept-form');
+    revalidatePath('/');
 }
 
 export async function createDish(data: BrandNewDish) {
