@@ -12,23 +12,23 @@ export default function Footer() {
                 <div className='justify-center flex'>
                     <NavElement
                         href="/"
-                        icon={<HomeIcon fill={`${path === '/' ? '#60a5fa' : 'white' }`} />}
+                        icon={<HomeIcon stroke={`${path === '/' ? '#60a5fa' : 'black' }`} />}
                     />
                     <NavElement
                         href="/weekly-planner"
-                        icon={<CalendarIcon fill={`${path === '/weekly-planner' ? '#60a5fa' : 'white' }`} />}
+                        icon={<CalendarIcon stroke={`${path === '/weekly-planner' ? '#60a5fa' : 'black' }`} />}
                     />
                     <NavElement
                         href="/dish-designer"
-                        icon={<PlusIcon fill={`${path === '/dish-designer' ? '#60a5fa' : 'white' }`} />}
+                        icon={<PlusIcon stroke={`${path === '/dish-designer' ? '#60a5fa' : 'black' }`} />}
                     />
                     <NavElement
                         href="/inventory"
-                        icon={<MenuIcon fill={`${path === '/inventory' ? '#60a5fa' : 'white' }`} />}
+                        icon={<MenuIcon stroke={`${path === '/inventory' ? '#60a5fa' : 'black' }`} />}
                     />
                     <NavElement
                         href="/shopping-day"
-                        icon={<ShoppingCartIcon fill={`${path === '/shopping-day' ? '#60a5fa' : 'white' }`} />}
+                        icon={<ShoppingCartIcon stroke={`${path === '/shopping-day' ? '#60a5fa' : 'black' }`} />}
                     />
                 </div>
             </div>

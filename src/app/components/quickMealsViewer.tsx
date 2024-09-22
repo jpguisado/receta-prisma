@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent } from "~/components/ui/card";
+import { Skeleton } from "~/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { type plannedMeal } from "~/models/types/plannedMeal.td";
 
@@ -17,18 +18,17 @@ export const QuickMealsViewer = () => {
     return (
         <Tabs defaultValue={data[0]?.meal} className="mb-8">
             <TabsList className="grid w-full grid-cols-5">
-                {data.map((meal) => (
+                {isLoading ? <Skeleton className="h-4 w-[100px]" /> : data.map((meal) => (
                     <TabsTrigger
                         key={meal.meal}
                         value={meal.meal}
                         className="flex flex-col items-center"
-                    >
-                        {/* <div className="w-6 h-6 mb-1">{meal.icon}</div> */}
+                        >
                         <span className="text-xs">{meal.meal.toLowerCase()}</span>
                     </TabsTrigger>
                 ))}
             </TabsList>
-            {data.map((meal) => (
+            {isLoading ? <Skeleton className="h-4 w-[200px]" /> :data.map((meal) => (
                 <TabsContent key={meal.meal} value={meal.meal}>
                     <Card className="border-none bg-gradient-to-r from-primary/20 to-primary/5">
                         <CardContent className="p-6">

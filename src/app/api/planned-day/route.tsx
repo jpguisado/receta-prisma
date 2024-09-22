@@ -1,5 +1,3 @@
-import { NextResponse } from "next/server";
-import { type plannedMeal } from "~/models/types/plannedMeal.td";
 import { db } from "~/server/db";
 
 /**
