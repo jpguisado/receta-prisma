@@ -49,7 +49,9 @@ export const getWeekNumber = (dateToCompare: Date) => {
  * @returns 
  */
 export const getWeekDates = (startingDate: Date) => {
+  // Day of the week that starts the calculation
   const startingDay = startingDate.getDay();
+  // Date that starts the calculation in milis
   const startingDayInMilis = startingDate.getTime();
   const week = [];
   for (let index = 0; index < startingDay; index++) {

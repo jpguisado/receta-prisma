@@ -136,11 +136,27 @@ export async function fetchMealsOfADay(plannedDayId : number) {
     })
 }
 
-export async function fetchIngredients () {
-    return await db.ingredientsinDishes.findMany({
+export async function fetchIngredients (datesOfTheWeek: Date[]) {
+    return await db.plannedMeal.findMany({
         include: {
-            dish: true,
-            ingredient: true
-        }
+            dish: {
+                include: {
+                    ingredients: {
+                        include: {
+                            ingredient: true
+                        }
+                    }
+                }
+            }
+        },
+        where: {
+            plannedDay: {
+                day: {
+                    in: datesOfTheWeek
+                }
+            }
+        },
+
     })
 }
+

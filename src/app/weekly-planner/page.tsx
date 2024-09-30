@@ -1,5 +1,5 @@
 import { fetchDishList, fetchPlannedDays } from "~/server/data-layer";
-import FormularioPlanearComida from "./formComponent";
+import FormularioPlanearComida from "./create-plan-form";
 import { DayComponent } from "./components/Day";
 import { getWeekDates } from "~/lib/utils";
 
@@ -9,8 +9,9 @@ export default async function Formulario({ searchParams }: { searchParams: { dat
      * Gets the date from Search Params or current date
      * @returns calendar starting date
      */
-    const getCalendarStartDate = () =>
-        searchParams.dateInMilis ? new Date(parseInt(searchParams.dateInMilis, 10)) : new Date();
+    const getCalendarStartDate = () => {3
+        return searchParams.dateInMilis ? new Date(parseInt(searchParams.dateInMilis, 10)) : new Date();
+    }
 
     const datesOfWeekToBePrinted = getWeekDates(getCalendarStartDate());
 

@@ -1,10 +1,8 @@
 import { Suspense } from "react";
 import { Card, CardContent } from "~/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import {
   countDishes,
   countPlannedMeals,
-  fetchTodaysDish,
 } from "~/server/data-layer";
 import { QuickMealsViewer } from "./components/quickMealsViewer";
 
@@ -33,9 +31,7 @@ export default async function HomePage() {
             <p className="text-sm font-medium text-red-800">
               Planned Meals so far:
             </p>
-            <Suspense fallback={'...'}>
-              <p className="text-xl font-bold text-red-900">{plannedMealCount}</p>
-            </Suspense>
+            <p className="text-xl font-bold text-red-900">{plannedMealCount}</p>
           </CardContent>
         </Card>
         <Card className="border-none bg-yellow-200">

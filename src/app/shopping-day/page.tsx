@@ -15,7 +15,7 @@ export default async function Shopping() {
         <Button>Guardar</Button>
       </form>
       <h1>Lista de la compra:</h1>
-      {ingredients.map((ingredient) => {
+      {/* {ingredients.map((ingredient) => {
         return (
           <div key={ingredient.ingredientId + ingredient.dishId} className="flex items-center space-x-2">
             <Checkbox id={ingredient.ingredientId.toString()} />
@@ -28,7 +28,7 @@ export default async function Shopping() {
           </div>
         )
       })
-      }
+      } */}
     </div>
   )
 }
