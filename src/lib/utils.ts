@@ -43,32 +43,64 @@ export const getWeekNumber = (dateToCompare: Date) => {
   return Math.ceil(((difference) / 86400000 + 1) / 7)
 }
 
+// /**
+//  * Returns the dates of a week starting on a date
+//  * @param startingDate 
+//  * @returns 
+//  */
+// export const getWeekDates = (startingDate: Date) => {
+//   // Day of the week that starts the calculation
+//   const startingDay = startingDate.getDay();
+//   // Date that starts the calculation in milis
+//   const startingDayInMilis = startingDate.getTime();
+//   const week = [];
+//   for (let index = 0; index < startingDay; index++) {
+//     week.push(new Date(startingDayInMilis - 86400000 * (startingDay - index - 1)));
+//   }
+//   for (let index = startingDay; index < 7; index++) {
+//     week.push(new Date(startingDayInMilis + (86400000 * (index - startingDay + 1))));
+//   }
+//   return week;
+// }
+
+// /**
+//  * Returns the date of the first day of the week using any date of the evaluated week 
+//  * @param evaluatedDate any date of the week
+//  * @returns the date of the first day of the week assuming that's monday 
+//  */
+// export const firstDayOfWeek = (evaluatedDate: Date) => {
+//   const daysElapsed = evaluatedDate.getDay();
+//   return new Date(evaluatedDate.getTime() - ((daysElapsed - 1) * 86400000));
+// }
+
+
 /**
- * Returns the dates of a week starting on a date
- * @param startingDate 
- * @returns 
+ * Given a date, returns the date of sunday or monday
+ * @param dateWhereToSearch date that starts the search
+ * @param firstDayOfWeek 0 (sunday) or 1 (monday)
+ * @returns First day date
  */
-export const getWeekDates = (startingDate: Date) => {
-  // Day of the week that starts the calculation
-  const startingDay = startingDate.getDay();
-  // Date that starts the calculation in milis
-  const startingDayInMilis = startingDate.getTime();
-  const week = [];
-  for (let index = 0; index < startingDay; index++) {
-    week.push(new Date(startingDayInMilis - 86400000 * (startingDay - index - 1)));
-  }
-  for (let index = startingDay; index < 7; index++) {
-    week.push(new Date(startingDayInMilis + (86400000 * (index - startingDay + 1))));
-  }
-  return week;
+export const findFirstDayOfWeek = (dateWhereToSearch: Date): Date => {
+  const twentyFourHoursInMilis = 86400000;
+  const dayNumber = ((dateWhereToSearch.getDay() + 6) % 7);
+  const daysSinceDayOneInMilis = (dayNumber * twentyFourHoursInMilis);
+  const firstDay = new Date(dateWhereToSearch.getTime() - daysSinceDayOneInMilis);
+  return firstDay;
 }
 
 /**
- * Returns the date of the first day of the week using any date of the evaluated week 
- * @param evaluatedDate any date of the week
- * @returns the date of the first day of the week assuming that's monday 
- */
-export const firstDayOfWeek = (evaluatedDate: Date) => {
-  const daysElapsed = evaluatedDate.getDay();
-  return new Date(evaluatedDate.getTime() - ((daysElapsed - 1) * 86400000));
+* Given a date, it returns the next six following dates
+* @param firstDayOfWeek It can be 0 or 1 representing sunday or monday
+* @param firstDateOfWeek It will be the date of the first day of week
+* @returns Array of dates that represents the current week
+*/
+export const calcularLosDiasDeLaSemana = (firstDateOfWeek: Date) : Date[] => {
+  const twentyFourHoursInMilis = 86400000;
+  const weekDates: Date[] = []; // Array donde almacenaremos las fechas
+  for (let dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++) {
+      const dayInMilis = firstDateOfWeek.getTime() + twentyFourHoursInMilis * dayOfWeek;
+      const dateToAdd = new Date(dayInMilis);
+      weekDates.push(dateToAdd);
+  }
+  return weekDates;
 }

@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
-import { cn, getWeekDates, MEALS, MONTHS, WEEK_DAYS } from "~/lib/utils";
+import { cn, MEALS, MONTHS, WEEK_DAYS } from "~/lib/utils";
 import type { BrandNewDish } from "~/models/types/dish.td";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "~/components/ui/command";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
@@ -22,7 +22,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { createPlannedDay } from "~/models/types/plannedDay.td";
 import { createPlannedDaySchema } from "~/models/schemas/plannedDaySchema";
 
-export default function FormularioPlanearComida({ dishList }: { dishList: BrandNewDish[] }) {
+export default function FormularioPlanearComida({ dishList, week }: { dishList: BrandNewDish[], week: Date[] }) {
 
   const [startingDate, setStartingDate] = useState(new Date());
   const searchParams = useSearchParams();
@@ -82,11 +82,11 @@ export default function FormularioPlanearComida({ dishList }: { dishList: BrandN
   }
 
   const createNewWeek = createMealsForWeek.bind(null);
-  const weekToBePrinted = getWeekDates(startingDate);
+  // const weekToBePrinted = getWeekDates(startingDate);
 
   return (
     <>
-      <div>{weekToBePrinted[0]?.getDate()} - {weekToBePrinted[6]?.getDate()} {MONTHS[startingDate.getMonth()]}</div>
+      <div>{week[0]?.getDate()} - {week[6]?.getDate()} {MONTHS[startingDate.getMonth()]}</div>
       {/* <div className="text-2xl font-medium">Semana {getWeekNumber(startingDate)}</div> */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -104,7 +104,7 @@ export default function FormularioPlanearComida({ dishList }: { dishList: BrandN
                     <Button onClick={(e) => setCalendarStartDate(e, 'remove')} variant="outline" size="icon">
                       <ChevronLeft className="h-4 w-4" />
                     </Button>
-                    {weekToBePrinted.map((day) => {
+                    {week.map((day) => {
                       return (
                         <FormItem key={day.getDate().toString()} className="flex flex-col items-center">
                           <FormLabel className="font-normal">
