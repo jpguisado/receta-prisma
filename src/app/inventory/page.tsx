@@ -20,12 +20,9 @@ export default async function Inventory({ searchParams }: { searchParams: { date
 
 	return (
 		<div>
-			{/* <GetDays startingDate={new Date()} /> */}
-			hoy: {findFirstDayOfWeek(getCalendarStartDate()).toString()}
-			<br></br>la semana: {(datesOfWeekToBePrinted).map((date)=> <p key={date.getTime()}>{date.toString()}</p>)}
 			{(await todayIngredients).map((ingredient) => {
 				return ingredient.dish.ingredients.map((ingredient) => {
-					return ingredient.ingredient.name
+					return <p key={ingredient.ingredientId}>{ingredient.ingredient.name}</p>
 				})
 			})}
 		</div>

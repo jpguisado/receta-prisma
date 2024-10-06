@@ -13,7 +13,7 @@ export default async function Formulario({ searchParams }: { searchParams: { dat
         return searchParams.dateInMilis ? new Date(parseInt(searchParams.dateInMilis, 10)) : new Date();
     }
 
-    const firstDayOfPassedWeek = findFirstDayOfWeek(getCalendarStartDate(),1)
+    const firstDayOfPassedWeek = findFirstDayOfWeek(getCalendarStartDate())
 
     const datesOfWeekToBePrinted = calcularLosDiasDeLaSemana(firstDayOfPassedWeek);
 
