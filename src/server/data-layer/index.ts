@@ -2,6 +2,10 @@ import type { BrandNewDish } from "~/models/types/dish.td";
 import { db } from "../db";
 import type { plannedMeal } from "~/models/types/plannedMeal.td";
 import type { plannedDay } from "~/models/types/plannedDay.td";
+import { IngredientInDishes } from "~/models/types/ingredient.td";
+import { z } from "zod";
+import { dishSchema } from "~/models/schemas/dishSchema";
+import { brandNewIngredientSchema, ingredientSchema } from "~/models/schemas/ingredientSchema";
 
 /**
  * Gets all dishes in database
@@ -136,27 +140,48 @@ export async function fetchMealsOfADay(plannedDayId : number) {
     })
 }
 
-export async function fetchIngredients (datesOfTheWeek: Date[]) {
-    return await db.plannedMeal.findMany({
-        include: {
+export async function fetchIngredientsOnDishes (datesOfTheWeek: Date[]) {
+    const filteredIngredients = await db.plannedMeal.findMany({
+        select: {
             dish: {
-                include: {
+                select: {
                     ingredients: {
-                        include: {
-                            ingredient: true
-                        }
+                        select: {
+                            ingredient: {
+                                select: { name: true, id: true }
+                            },
+                            quantity: true,
+                            quantityUnit: true,
+                            isListedInShoppingList: true
+                        },
                     }
                 }
             }
         },
         where: {
+            dish: {
+                ingredients: {
+                    every: {
+                        isListedInShoppingList: { equals: false }
+                    }
+                }
+            }, 
             plannedDay: {
                 day: {
                     in: datesOfTheWeek
                 }
             }
         },
-
     })
+    return filteredIngredients.flatMap((dishList) => {
+		return dishList.dish.ingredients.flatMap(( dish ) => {
+		 	return {
+				name: dish.ingredient.name,
+				quantity: dish.quantity,
+				quantityUnit: dish.quantityUnit,
+                isListedInShoppingList: dish.isListedInShoppingList
+			}
+		})
+	})
 }
 

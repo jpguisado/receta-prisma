@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { dishSchema } from "./dishSchema";
 
 export const ingredientSchema = z.object({
     id: z.number().optional(),

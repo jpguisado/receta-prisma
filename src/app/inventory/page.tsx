@@ -1,6 +1,6 @@
 import { calcularLosDiasDeLaSemana, findFirstDayOfWeek } from "~/lib/utils";
-import { fetchIngredients } from "~/server/data-layer"
-import GetDays from "./days-query";
+import { fetchIngredientsOnDishes } from "~/server/data-layer"
+import ManageInventoryForm from "./manage-inventory-form";
 
 export default async function Inventory({ searchParams }: { searchParams: { dateInMilis?: string, page?: string; }; }) {
 
@@ -16,15 +16,14 @@ export default async function Inventory({ searchParams }: { searchParams: { date
 
     const datesOfWeekToBePrinted = calcularLosDiasDeLaSemana(firstDayOfPassedWeek);
 	
-	const todayIngredients = fetchIngredients(datesOfWeekToBePrinted);
+	const todayIngredients = await fetchIngredientsOnDishes(datesOfWeekToBePrinted);
 
 	return (
 		<div>
-			{(await todayIngredients).map((ingredient) => {
-				return ingredient.dish.ingredients.map((ingredient) => {
-					return <p key={ingredient.ingredientId}>{ingredient.ingredient.name}</p>
-				})
-			})}
+			<div className="text-2xl font-medium">Ingredientes necesarios:</div>
+			<ManageInventoryForm
+				ingredientsOfTheWeek={todayIngredients}
+			/>
 		</div>
 	)
 }

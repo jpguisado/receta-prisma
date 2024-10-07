@@ -29,6 +29,7 @@ model IngredientsinDishes {
     ingredientId Int
     quantity String @default("")
     quantityUnit String @default("")
+    isListedInShoppingList Boolean @default(false)
     @@id([dishId, ingredientId])
 }
 
@@ -55,4 +56,12 @@ model plannedDay {
     id Int @id @default(autoincrement())
     day DateTime @db.Date @unique
     plannedMeal plannedMeal[]
+}
+
+model shoppingList {
+    id Int @id @default(autoincrement())
+    name String
+    quantity String @default("")
+    quantityUnit String @default("")
+    isBought Boolean
 }
