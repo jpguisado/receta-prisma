@@ -48,6 +48,7 @@ export default function DishDesignerComponent({ name, recipe, ingredients, id }:
     const editExistingDish = editDish.bind(null);
     const deleteIngredient = deleteIngredientFromDish.bind(null)
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async function deleteIngredientFromDB(id: number, ingredientId: number, index: number) {
         console.log(id, ingredientId, index)
         id ? await deleteIngredient(id, ingredientId) : '';

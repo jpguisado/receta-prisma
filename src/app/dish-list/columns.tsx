@@ -4,7 +4,7 @@ import type { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
 import Link from "next/link"
 import { Button } from "~/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "~/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel , DropdownMenuTrigger } from "~/components/ui/dropdown-menu"
 import type { Dish } from "~/models/types/dish.td"
 import { deleteDishWithId } from "~/server/actions"
 

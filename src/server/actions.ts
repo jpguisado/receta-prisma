@@ -1,9 +1,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { brandNewDishSchema, createDishSchema } from "~/models/schemas/dishSchema";
+import { brandNewDishSchema } from "~/models/schemas/dishSchema";
 import { createPlannedDaySchema } from "~/models/schemas/plannedDaySchema";
-import type { BrandNewDish, Dish, newDish } from "~/models/types/dish.td";
+import type { BrandNewDish, newDish } from "~/models/types/dish.td";
 import type { createPlannedDay } from "~/models/types/plannedDay.td";
 import { db } from "./db";
 

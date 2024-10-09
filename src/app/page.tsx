@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { Card, CardContent } from "~/components/ui/card";
 import {
   countDishes,
