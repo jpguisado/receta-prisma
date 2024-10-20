@@ -1,50 +1,34 @@
 'use client';
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, Form } from "~/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import { ShoppingListItemsSchemaDos } from "~/models/schemas/shoppingListItems";
+import type { ShoppableItemDosType } from "~/models/types/shoppingListItems.td";
+import { addItemsToShoppingList } from "~/server/actions";
 
-const inventorySchema = z.object({
-    name: z.string(),
-    quantity: z.string(),
-    quantityUnit: z.string(),
-    isListedInShoppingList: z.boolean()
-})
+export default function ManageInventoryForm({ itemsForThisWeek }: { itemsForThisWeek: ShoppableItemDosType }) {
 
-type InventoryType = z.infer<typeof inventorySchema>
-
-const FormSchema = z.object({
-    items: z.array(z.string()),
-})
-
-export default function ManageInventoryForm({ ingredientsOfTheWeek }: { ingredientsOfTheWeek: InventoryType[] }) {
-
-    /**
-     * Manages the form for a plannedMeal
-     */
-    const form = useForm<z.infer<typeof FormSchema>>({
-        resolver: zodResolver(FormSchema),
-        defaultValues: {
-            items: [],
-        }
+    const form = useForm<ShoppableItemDosType>({
+        // resolver: zodResolver(ShoppingListItemsSchemaDos.array()),
+        defaultValues: itemsForThisWeek
     });
 
-    /**
-     *
-     * @param values
-     */
-    async function onSubmit(values: z.infer<typeof FormSchema>) {
-        console.log(values);
+    const { control } = form;
+
+    async function onSubmit(values: ShoppableItemDosType) {
+        await addItemsToShoppingList(values)
+
     }
 
+
     return (
+
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
-                    control={form.control}
+                    control={control}
                     name="items"
                     render={() => (
                         <FormItem>
@@ -54,7 +38,7 @@ export default function ManageInventoryForm({ ingredientsOfTheWeek }: { ingredie
                                     Select the items you want to display in the sidebar.
                                 </FormDescription>
                             </div>
-                            {ingredientsOfTheWeek.map((item) => (
+                            {itemsForThisWeek.items.map((item) => (
                                 <FormField
                                     key={item.name}
                                     control={form.control}
@@ -67,13 +51,13 @@ export default function ManageInventoryForm({ ingredientsOfTheWeek }: { ingredie
                                             >
                                                 <FormControl>
                                                     <Checkbox
-                                                        checked={field.value?.includes(item.name)}
+                                                        checked={field.value?.some((field) => JSON.stringify(item) === JSON.stringify(field))}
                                                         onCheckedChange={(checked) => {
                                                             return checked
-                                                                ? field.onChange([...field.value, item.name])
+                                                                ? field.onChange()
                                                                 : field.onChange(
                                                                     field.value?.filter(
-                                                                        (value) => value !== item.name
+                                                                        value => value.name !== item.name
                                                                     )
                                                                 )
                                                         }}

@@ -6,6 +6,10 @@ import { createPlannedDaySchema } from "~/models/schemas/plannedDaySchema";
 import type { BrandNewDish, newDish } from "~/models/types/dish.td";
 import type { createPlannedDay } from "~/models/types/plannedDay.td";
 import { db } from "./db";
+import { ShoppableItemDosType, ShoppableItemType } from "~/models/types/shoppingListItems.td";
+import { it } from "node:test";
+import { z } from "zod";
+import { ShoppingListItemsSchema, ShoppingListItemsSchemaDos } from "~/models/schemas/shoppingListItems";
 
 // const CreateInvoice = FormSchema.omit({ id: true, date: true });
 //amount: z.coerce.number(),
@@ -126,8 +130,8 @@ export async function editDish(data: newDish): Promise<void> {
 
 export async function deleteIngredientFromDish(dishId: number, ingredientId: number): Promise<void> {
     await db.ingredientsinDishes.deleteMany({
-        where: {
-            dishId: dishId,
+    where: {
+        dishId: dishId,
             ingredientId: ingredientId
         }
     })
@@ -140,4 +144,14 @@ export async function deleteDishWithId(id: number) {
         }
     })
     revalidatePath('/dish-list')
+}
+
+export async function addItemsToShoppingList(items: ShoppableItemDosType) {
+
+    const results = ShoppingListItemsSchemaDos.safeParse(items);
+    console.log(results)
+     
+    // await db.shoppingList.createMany({
+    //     data: formData
+    // })
 }

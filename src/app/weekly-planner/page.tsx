@@ -3,7 +3,10 @@ import FormularioPlanearComida from "./create-plan-form";
 import { DayComponent } from "./components/Day";
 import { calcularLosDiasDeLaSemana, findFirstDayOfWeek } from "~/lib/utils";
 
-export default async function Formulario({ searchParams }: { searchParams: { dateInMilis?: string, page?: string; }; }) {
+export default async function Formulario(
+    props: { searchParams: Promise<{ dateInMilis?: string, page?: string; }>; }
+) {
+    const searchParams = await props.searchParams;
 
     /**
      * Gets the date from Search Params or current date

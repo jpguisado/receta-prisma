@@ -2,12 +2,13 @@ import Link from "next/link";
 import DishDesignerComponent from "~/app/dish-designer/create-dish-form";
 import { fetchDishWithId } from "~/server/data-layer";
 
-export default async function EditDish({ params }: { params: { id: string }; }) {
+export default async function EditDish(props: { params: Promise<{ id: string }>; }) {
+    const params = await props.params;
 
     const dish = await fetchDishWithId(parseInt(params.id))
 
     console.log(dish)
-    
+
     return (
         <div>
             <div className="text-2xl font-medium">Editar recetas:</div>
