@@ -63,5 +63,5 @@ model shoppingList {
     name String
     quantity String @default("")
     quantityUnit String @default("")
-    isBought Boolean
+    isBought Boolean? @default(false)
 }

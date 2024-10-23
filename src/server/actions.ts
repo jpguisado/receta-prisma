@@ -149,9 +149,21 @@ export async function deleteDishWithId(id: number) {
 export async function addItemsToShoppingList(items: ShoppableItemDosType) {
 
     const results = ShoppingListItemsSchemaDos.safeParse(items);
-    console.log(results)
+    
+    if(!results.data?.items) {
+        return null
+    }
+
+    const shoppingListItems = results.data.items.map((item) => {
+        return ({
+            name: item.name,
+            isBought: false,
+            quantity: item.quantity,
+            quantityUnit: item.quantityUnit
+        })
+    })
      
-    // await db.shoppingList.createMany({
-    //     data: formData
-    // })
+    await db.shoppingList.createMany({
+        data: shoppingListItems
+    })
 }
