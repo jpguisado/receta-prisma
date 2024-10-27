@@ -27,10 +27,10 @@ export default function RootLayout({
       <html lang="es">
         <head>
           <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1" />
-          {/* <meta property="og:image" content="<generated>" />
+          <meta property="og:image" content="<generated>" />
           <meta property="og:image:type" content="<generated>" />
           <meta property="og:image:width" content="<generated>" />
-          <meta property="og:image:height" content="<generated>" /> */}
+          <meta property="og:image:height" content="<generated>" />
         </head>
         <body className={`h-dvh flex flex-col justify-between font-sans touch-none`}>
           <div className="overflow-x-scroll h-[90%] p-6">
