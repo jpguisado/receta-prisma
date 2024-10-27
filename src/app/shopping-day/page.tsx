@@ -1,8 +1,9 @@
+import { connection } from "next/server";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 
 export default async function Shopping() {
-
+  await connection();
   return (
     <div className="flex flex-col gap-3">
       <h1>Añade elementos:</h1>

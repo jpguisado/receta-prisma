@@ -4,9 +4,10 @@ import {
   countPlannedMeals,
 } from "~/server/data-layer";
 import { QuickMealsViewer } from "./components/quickMealsViewer";
+import { connection } from "next/server";
 
 export default async function HomePage() {
-
+  await connection();
   /**
    * Gets planned days of the referenced week
    */

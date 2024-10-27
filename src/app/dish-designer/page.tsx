@@ -1,7 +1,9 @@
 import Link from "next/link";
 import DishDesignerComponent from "./create-dish-form";
+import { connection } from "next/server";
 
 export default async function DishDesigner() {
+    await connection();
     return (
         <div>
             <div className="text-2xl font-medium">Crear recetas:</div>

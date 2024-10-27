@@ -1,12 +1,13 @@
 import { calcularLosDiasDeLaSemana, findFirstDayOfWeek } from "~/lib/utils";
 import { fetchIngredientsOnDishes } from "~/server/data-layer"
 import ManageInventoryForm from "./manage-inventory-form";
+import { connection } from "next/server";
 
 export default async function Inventory(
     props: { searchParams: Promise<{ dateInMilis?: string, page?: string; }>; }
 ) {
     const searchParams = await props.searchParams;
-
+    await connection();
     /**
  * Gets the date from Search Params or current date
  * @returns calendar starting date
