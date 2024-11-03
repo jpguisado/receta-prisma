@@ -7,12 +7,8 @@ import { ManageShoppingListForm } from "./manage-shoppinglist-form";
 export default async function ShoppingListPage() {
   await connection();
 
+  // TODO: mostrar ingredientes pendientes de comprar de esta última semana
   const fetchShoppingList = await fetchElementsOnShoppingList();
-
-  /**
-   * TODO:
-   * Handle items elements independently
-   */
 
   return (
     <div className="flex flex-col gap-3">

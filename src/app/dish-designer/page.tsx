@@ -2,7 +2,14 @@ import Link from "next/link";
 import DishDesignerComponent from "./create-dish-form";
 import { connection } from "next/server";
 
-export default async function DishDesigner() {
+export default async function DishDesigner(props: {
+    searchParams?: Promise<{
+      query?: string;
+      page?: string;
+    }>;
+  }) {
+    const searchParams = await props.searchParams;
+    const query = searchParams?.query ?? '';
     await connection();
     return (
         <div>

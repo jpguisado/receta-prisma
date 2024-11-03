@@ -7,8 +7,22 @@ import type { plannedDay } from "~/models/types/plannedDay.td";
  * Gets all dishes in database
  * @returns 
  */
-export async function fetchDishList(): Promise<BrandNewDish[]> {
-    const dishes = await db.dish.findMany({ include: { ingredients: { include: { ingredient: true } } } })
+export async function fetchDishList(query: string): Promise<BrandNewDish[]> {
+    const dishes = await db.dish.findMany({
+        include: {
+            ingredients: {
+                include: {
+                    ingredient: true
+                }
+            }
+        },
+        where: {
+            name: {
+                contains: query // store dish name in mayus
+            }
+        }
+    }
+    )
     return dishes;
 }
 
