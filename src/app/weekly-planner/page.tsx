@@ -23,7 +23,7 @@ export default async function Formulario(
 
     // Initiate both requests in parallel
     const [list, days] = await Promise.all([
-        fetchDishList(), fetchPlannedDays(datesOfWeekToBePrinted)])
+        fetchDishList(''), fetchPlannedDays(datesOfWeekToBePrinted)])
 
     return (
         <>

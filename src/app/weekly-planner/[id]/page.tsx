@@ -6,7 +6,7 @@ export default async function PlannedDay(props: { params: Promise<{ id: string }
     const params = await props.params;
 
     const meals: plannedMeal[] = await fetchMealsOfADay(parseInt(params.id));
-    const dishList = await fetchDishList();
+    const dishList = await fetchDishList('');
 
     return (
         <div className="flex flex-col gap-3">
