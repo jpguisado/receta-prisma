@@ -1,9 +1,8 @@
 'use client';
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { z } from "zod";
-import { Button } from "~/components/ui/button";
-import { Form, FormDescription, FormField, FormItem, FormMessage } from "~/components/ui/form";
+import { Card, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
+import { markItemAsBought } from "~/server/actions";
 
 export const itemSchema = z.object({
   title: z.string(),
@@ -12,42 +11,42 @@ export const itemSchema = z.object({
 
 export type itemType = z.infer<typeof itemSchema>
 
-const elementoComprado: itemType = {
-  title: 'patatas',
-  isBought: false
-};
+export function ManageShoppingListForm({ title, isBought, id, quantity, quantityUnit }: { title: string, isBought: boolean, id: number, quantity: string, quantityUnit: string }) {
 
-export function ManageShoppingListForm() {
+  const [itemStatus, setItemStatus] = useState(isBought);
 
-  const form = useForm<itemType>({
-    resolver: zodResolver(itemSchema),
-    defaultValues: elementoComprado
-  });
-
-  async function onSubmit(values: itemType) {
-    console.log(values);
-    // await addItemsToShoppingList(values)
+  async function changeItemStatus(id: number, isBought: boolean) {
+    setItemStatus(!itemStatus);
+    await markItemAsBought(id, isBought)
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <FormField
-          control={form.control}
-          name={elementoComprado.title}
-          render={() => (
-            <FormItem>
-              <div className="mb-4">
-                <FormDescription>
-                  Marca los ingredientes que no tengas en la nevera y pásalos a la lista de la compra.
-                </FormDescription>
-              </div>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Guardar</Button>
-      </form>
-    </Form>
+    <Card className="flex">
+      {itemStatus ?
+        <>
+          <CardHeader className="w-full">
+            <CardTitle className="line-through">{title}</CardTitle>
+            <CardDescription className="line-through">{quantity} {quantityUnit}</CardDescription>
+          </CardHeader>
+          <div onClick={() => changeItemStatus(id, !itemStatus)} className="bg-green-100 w-16 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+            </svg>
+          </div>
+        </>
+        :
+        <>
+          <CardHeader className="w-full">
+            <CardTitle>{title}</CardTitle>
+            <CardDescription>{quantity} {quantityUnit}</CardDescription>
+          </CardHeader>
+          <div onClick={() => changeItemStatus(id, !itemStatus)} className="bg-slate-100 w-16 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+            </svg>
+          </div>
+        </>
+      }
+    </Card>
   )
 }

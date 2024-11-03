@@ -22,9 +22,17 @@ export default async function ShoppingListPage() {
         <Button>Guardar</Button>
       </form>
       <h1>Lista de la compra:</h1>
-      <ManageShoppingListForm
-        itemsForThisWeek={fetchShoppingList}
-      />
+      {fetchShoppingList.map((item) => {
+        return (
+        <ManageShoppingListForm
+          key={item.id}
+          id={item.id}
+          title={item.name}
+          isBought={item.isBought!}
+          quantity={item.quantity}
+          quantityUnit={item.quantityUnit}
+        />)
+      })}
     </div>
   )
 }

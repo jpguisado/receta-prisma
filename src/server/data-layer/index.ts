@@ -183,8 +183,5 @@ export async function fetchIngredientsOnDishes(datesOfTheWeek: Date[]) {
 
 export async function fetchElementsOnShoppingList() {
     return await db.shoppingList.findMany({
-        where: {
-            isBought: false
-        }
     })
 }

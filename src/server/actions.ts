@@ -128,8 +128,8 @@ export async function editDish(data: newDish): Promise<void> {
 
 export async function deleteIngredientFromDish(dishId: number, ingredientId: number): Promise<void> {
     await db.ingredientsinDishes.deleteMany({
-    where: {
-        dishId: dishId,
+        where: {
+            dishId: dishId,
             ingredientId: ingredientId
         }
     })
@@ -147,8 +147,8 @@ export async function deleteDishWithId(id: number) {
 export async function addItemsToShoppingList(items: ShoppableItemDosType) {
 
     const results = ShoppingListItemsSchemaDos.safeParse(items);
-    
-    if(!results.data?.items) {
+
+    if (!results.data?.items) {
         return null
     }
 
@@ -160,8 +160,19 @@ export async function addItemsToShoppingList(items: ShoppableItemDosType) {
             quantityUnit: item.quantityUnit
         })
     })
-     
+
     await db.shoppingList.createMany({
         data: shoppingListItems
+    })
+}
+
+export async function markItemAsBought(id: number, status: boolean) {
+    await db.shoppingList.update({
+        data: {
+            isBought: status
+        },
+        where: {
+            id: id
+        }
     })
 }
