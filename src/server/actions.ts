@@ -6,10 +6,8 @@ import { createPlannedDaySchema } from "~/models/schemas/plannedDaySchema";
 import type { BrandNewDish, newDish } from "~/models/types/dish.td";
 import type { createPlannedDay } from "~/models/types/plannedDay.td";
 import { db } from "./db";
-import { ShoppableItemDosType, ShoppableItemType } from "~/models/types/shoppingListItems.td";
-import { it } from "node:test";
-import { z } from "zod";
-import { ShoppingListItemsSchema, ShoppingListItemsSchemaDos } from "~/models/schemas/shoppingListItems";
+import type { ShoppableItemDosType } from "~/models/types/shoppingListItems.td";
+import { ShoppingListItemsSchemaDos } from "~/models/schemas/shoppingListItems";
 
 // const CreateInvoice = FormSchema.omit({ id: true, date: true });
 //amount: z.coerce.number(),

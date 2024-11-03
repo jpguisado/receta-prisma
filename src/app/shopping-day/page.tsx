@@ -1,9 +1,19 @@
 import { connection } from "next/server";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
+import { fetchElementsOnShoppingList } from "~/server/data-layer";
+import { ManageShoppingListForm } from "./manage-shoppinglist-form";
 
-export default async function Shopping() {
+export default async function ShoppingListPage() {
   await connection();
+
+  const fetchShoppingList = await fetchElementsOnShoppingList();
+
+  /**
+   * TODO:
+   * Handle items elements independently
+   */
+
   return (
     <div className="flex flex-col gap-3">
       <h1>Añade elementos:</h1>
@@ -12,6 +22,9 @@ export default async function Shopping() {
         <Button>Guardar</Button>
       </form>
       <h1>Lista de la compra:</h1>
+      <ManageShoppingListForm
+        itemsForThisWeek={fetchShoppingList}
+      />
     </div>
   )
 }

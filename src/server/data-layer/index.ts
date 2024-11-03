@@ -113,9 +113,9 @@ export async function fetchPlannedDays(datesOfTheWeek: Date[]): Promise<plannedD
             day: "asc"
         }
     })
-    
+
     // Sorts meals to show them in order
-    comidaPlanificada.map((comida) => comida.plannedMeal.sort((a,b) =>  MEALS.indexOf(a.meal) - MEALS.indexOf(b.meal)))
+    comidaPlanificada.map((comida) => comida.plannedMeal.sort((a, b) => MEALS.indexOf(a.meal) - MEALS.indexOf(b.meal)))
 
     return comidaPlanificada;
 }
@@ -125,18 +125,18 @@ export async function fetchPlannedDays(datesOfTheWeek: Date[]): Promise<plannedD
  * @param plannedDayId ID of the day to be returned
  * @returns Meals of passed day
  */
-export async function fetchMealsOfADay(plannedDayId : number) {
+export async function fetchMealsOfADay(plannedDayId: number) {
     return await db.plannedMeal.findMany({
         where: {
             plannedDayId: plannedDayId
-        }, 
+        },
         include: {
             dish: true
         }
     })
 }
 
-export async function fetchIngredientsOnDishes (datesOfTheWeek: Date[]) {
+export async function fetchIngredientsOnDishes(datesOfTheWeek: Date[]) {
     const filteredIngredients = await db.plannedMeal.findMany({
         select: {
             dish: {
@@ -161,7 +161,7 @@ export async function fetchIngredientsOnDishes (datesOfTheWeek: Date[]) {
                         isListedInShoppingList: { equals: false }
                     }
                 }
-            }, 
+            },
             plannedDay: {
                 day: {
                     in: datesOfTheWeek
@@ -170,14 +170,21 @@ export async function fetchIngredientsOnDishes (datesOfTheWeek: Date[]) {
         },
     })
     return filteredIngredients.flatMap((dishList) => {
-		return dishList.dish.ingredients.flatMap(( dish ) => {
-		 	return {
-				name: dish.ingredient.name,
-				quantity: dish.quantity,
-				quantityUnit: dish.quantityUnit,
+        return dishList.dish.ingredients.flatMap((dish) => {
+            return {
+                name: dish.ingredient.name,
+                quantity: dish.quantity,
+                quantityUnit: dish.quantityUnit,
                 isListedInShoppingList: dish.isListedInShoppingList
-			}
-		})
-	})
+            }
+        })
+    })
 }
 
+export async function fetchElementsOnShoppingList() {
+    return await db.shoppingList.findMany({
+        where: {
+            isBought: false
+        }
+    })
+}

@@ -1,10 +1,8 @@
 'use client';
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
-import { ShoppingListItemsSchemaDos } from "~/models/schemas/shoppingListItems";
 import type { ShoppableItemDosType } from "~/models/types/shoppingListItems.td";
 import { addItemsToShoppingList } from "~/server/actions";
 
@@ -19,12 +17,9 @@ export default function ManageInventoryForm({ itemsForThisWeek }: { itemsForThis
 
     async function onSubmit(values: ShoppableItemDosType) {
         await addItemsToShoppingList(values)
-
     }
 
-
     return (
-
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
@@ -33,9 +28,8 @@ export default function ManageInventoryForm({ itemsForThisWeek }: { itemsForThis
                     render={() => (
                         <FormItem>
                             <div className="mb-4">
-                                <FormLabel className="text-base">Sidebar</FormLabel>
                                 <FormDescription>
-                                    Select the items you want to display in the sidebar.
+                                    Marca los ingredientes que no tengas en la nevera y pásalos a la lista de la compra.
                                 </FormDescription>
                             </div>
                             {itemsForThisWeek.items.map((item) => (
@@ -51,6 +45,7 @@ export default function ManageInventoryForm({ itemsForThisWeek }: { itemsForThis
                                             >
                                                 <FormControl>
                                                     <Checkbox
+                                                        className="size-8"
                                                         checked={field.value?.some((field) => JSON.stringify(item) === JSON.stringify(field))}
                                                         onCheckedChange={(checked) => {
                                                             return checked
@@ -63,7 +58,7 @@ export default function ManageInventoryForm({ itemsForThisWeek }: { itemsForThis
                                                         }}
                                                     />
                                                 </FormControl>
-                                                <FormLabel className="font-normal">
+                                                <FormLabel className="font-normal text-xl">
                                                     {item.name}
                                                 </FormLabel>
                                             </FormItem>
@@ -75,7 +70,7 @@ export default function ManageInventoryForm({ itemsForThisWeek }: { itemsForThis
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Submit</Button>
+                <Button type="submit">Guardar</Button>
             </form>
         </Form>
     )
