@@ -167,10 +167,10 @@ export async function fetchDishList(dishName: string) {
     return data;
 }
 
-export async function fetchTodaysMeals() {
+export async function fetchTodaysMeals(day: Date) {
     return await db.plannedDay.findUnique(({
         where: {
-            day: new Date()
+            day: day || new Date()
         },
         include: {
             plannedMeal: {

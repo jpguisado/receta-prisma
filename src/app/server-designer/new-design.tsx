@@ -3,7 +3,7 @@
 import type { DishListType, DishType } from "~/models/types/dish.type";
 import type { PlannedWeekType } from "~/models/types/plannedDay";
 
-import { AppleIcon, ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
+import { AppleIcon } from "lucide-react";
 import { use, useState, useTransition } from "react";
 import { Input } from "~/components/ui/input";
 import {
@@ -16,10 +16,10 @@ import {
     SelectValue,
 } from "~/components/ui/select";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { getWeekStartDate, MEALS } from "~/lib/utils";
-import { Button } from "~/components/ui/button";
+import { MEALS } from "~/lib/utils";
 import { updateMealOfDay } from "~/server/plannedWeek";
 import TableSkeleton from "~/components/custom/table-skeleton";
+import ActiveControls from "~/components/custom/active-week-controls";
 export const dynamic = 'force-dynamic';
 const NewDesignComponent = (
     { storedDishList, storedPlannedWeek, currentWeek }: {
@@ -28,9 +28,9 @@ const NewDesignComponent = (
         storedDishList: Promise<DishListType>,
     }
 ) => {
-    const pathname = usePathname();
     const router = useRouter();
     const params = useSearchParams();
+    const pathname = usePathname();
     const week = use(storedPlannedWeek);
     const dishList = use(storedDishList);
     const [isHovering, setIsHovering] = useState<{ x: number, y: number } | null>();
@@ -42,44 +42,6 @@ const NewDesignComponent = (
         recipe: '',
         ingredientList: []
     });
-    const checkActiveDate = () => {
-        if (params.has('d') && params.has('m') && params.has('y')) {
-            const d = parseInt(params.get('d')!);
-            const m = parseInt(params.get('m')!);
-            const y = parseInt(params.get('y')!);
-            const currentDateInParams = new Date(y, m, d);
-            const firstDayFromParams = getWeekStartDate(currentDateInParams);
-            return firstDayFromParams;
-        } else {
-            const currentYear = new Date().getFullYear();
-            const currentMonth = new Date().getMonth();
-            const currentDay = new Date().getDate();
-            const currentDateInParams = new Date(currentYear, currentMonth, currentDay, 1);
-            const firstDayFromServer = getWeekStartDate(currentDateInParams);
-            return firstDayFromServer;
-        }
-    }
-    function updateSearchParams(newDate: Date) {
-        const params = new URLSearchParams();
-        params.set('d', newDate.getDate().toString());
-        params.set('m', newDate.getMonth().toString());
-        params.set('y', newDate.getFullYear().toString());
-        startTransition(() => {
-            router.replace(`${pathname}?${params.toString()}`);
-        });
-    }
-    function adjustCurrentWeek(direction: string) {
-        const currentDate = checkActiveDate();
-        if (direction === 'next') {
-            const oneWeekMoreInMilis = currentDate.getTime() + (86400000 * 7);
-            const oneWeekMoreDate = new Date(oneWeekMoreInMilis);
-            updateSearchParams(new Date(oneWeekMoreDate));
-        } else {
-            const oneWeekLessInMilis = currentDate.getTime() - (86400000 * 7);
-            const oneWeekLessDate = new Date(oneWeekLessInMilis);
-            updateSearchParams(new Date(oneWeekLessDate));
-        }
-    }
     async function updateCurrentMeal() {
         const mealId = week[fromCoordinates!.dayIndex]!.plannedMeal[fromCoordinates!.mealIndex]?.id;
         await updateMealOfDay(1, mealId!)
@@ -144,29 +106,10 @@ const NewDesignComponent = (
             <div className="col-span-9 gap-3 flex flex-col h-full w-full">
                 <div className="grid grid-cols-[200px_,_repeat(7,minmax(0,_1fr))] gap-x-3 gap-y-1 text-center h-full grid-rows-[3rem]">
                     {/* Days of the week */}
-                    <div className="flex justify-between items-center gap-1 h-12">
-                        <Button
-                            variant={"outline"}
-                            disabled={isPending}
-                            onClick={(() => adjustCurrentWeek('previous'))}
-                        >
-                            <ChevronLeftCircle />
-                        </Button>
-                        <Button
-                            variant={"outline"}
-                            disabled={isPending}
-                        // onClick={(() => adjustCurrentWeek('next'))}
-                        >
-                            Hoy
-                        </Button>
-                        <Button
-                            variant={"outline"}
-                            disabled={isPending}
-                            onClick={(() => adjustCurrentWeek('next'))}
-                        >
-                            <ChevronRightCircle />
-                        </Button>
-                    </div>
+                    <ActiveControls
+                        mode="week"
+                        isPending={isPending}
+                    />
                     {currentWeek.map((day) =>
                         <div key={day.getDay()} className="h-12 items-center flex justify-center text-sm font-medium border-[1px] bg-slate-100 rounded-[4px]">{day.getDate().toString()}</div>
                     )}
