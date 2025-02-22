@@ -18,8 +18,8 @@ export async function fetchActiveWeekData(datesOfTheWeek: Date[]) {
         return !storedDays.includes(day.getTime());
     })
 
+    console.log('pending days: ', pendingDays)
     for (const element of pendingDays) {
-        console.log(element)
         await db.plannedDay.create({
             data: {
                 day: element,
