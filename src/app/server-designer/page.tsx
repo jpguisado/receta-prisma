@@ -21,14 +21,14 @@ export default async function Page(props: {
             const d = parseInt(dayInParams);
             const m = parseInt(monthInParams);
             const y = parseInt(yearInParams);
-            const currentDateInParams = new Date(y, m, d, 1);
+            const currentDateInParams = new Date(y, m, d);
             const firstDayFromParams = getWeekStartDate(currentDateInParams);
             return firstDayFromParams;
         } else {
             const currentYear = new Date().getFullYear();
             const currentMonth = new Date().getMonth();
             const currentDay = new Date().getDate();
-            const currentDateInParams = new Date(currentYear, currentMonth, currentDay, 1);
+            const currentDateInParams = new Date(currentYear, currentMonth, currentDay);
             const firstDayFromServer = getWeekStartDate(currentDateInParams);
             return firstDayFromServer;
         }

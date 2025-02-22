@@ -16,10 +16,7 @@ export async function fetchActiveWeekData(datesOfTheWeek: Date[]) {
     const storedDays = existingDays.map((day) => day.day.getTime());
     const pendingDays = datesOfTheWeek.filter((day) => {
         return !storedDays.includes(day.getTime());
-    })
-    console.log(datesOfTheWeek)
-    console.log(storedDays)
-    console.log('pending days: ', pendingDays)
+    });
     for (const element of pendingDays) {
         await db.plannedDay.create({
             data: {

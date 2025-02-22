@@ -47,7 +47,7 @@ const NewDesignComponent = (
             const d = parseInt(params.get('d')!);
             const m = parseInt(params.get('m')!);
             const y = parseInt(params.get('y')!);
-            const currentDateInParams = new Date(y, m, d, 1);
+            const currentDateInParams = new Date(y, m, d);
             const firstDayFromParams = getWeekStartDate(currentDateInParams);
             return firstDayFromParams;
         } else {
