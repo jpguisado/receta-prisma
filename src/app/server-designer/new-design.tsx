@@ -4,7 +4,7 @@ import type { DishListType, DishType } from "~/models/types/dish.type";
 import type { PlannedWeekType } from "~/models/types/plannedDay";
 
 import { AppleIcon, ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
-import { use, useState, useTransition } from "react";
+import { Suspense, use, useState, useTransition } from "react";
 import { Input } from "~/components/ui/input";
 import {
     Select,
@@ -129,16 +129,16 @@ const NewDesignComponent = (
                 />
                 <div className="border-[1px] rounded-[2px] px-4 py-2 text-sm font-medium flex flex-col gap-3 h-full overflow-x-scroll">
                     <div>Dishes:</div>
-                    {dishList?.map((dish) => {
-                        return <div
-                            className="hover:bg-slate-50 border-[1px] bg-white rounded-[2px] p-3 flex gap-2 items-center"
-                            key={dish.id}
-                            draggable
-                            onDragStart={() => setDraggedValue(dish)}>
-                            <AppleIcon />
-                            {dish.name}
-                        </div>
-                    })}
+                        {dishList?.map((dish) => {
+                            return <div
+                                className="hover:bg-slate-50 border-[1px] bg-white rounded-[2px] p-3 flex gap-2 items-center"
+                                key={dish.id}
+                                draggable
+                                onDragStart={() => setDraggedValue(dish)}>
+                                <AppleIcon />
+                                {dish.name}
+                            </div>
+                        })}
                 </div>
             </div>
             <div className="col-span-9 gap-3 flex flex-col h-full w-full">

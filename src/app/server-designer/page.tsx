@@ -1,6 +1,7 @@
 import { getWeekDates, getWeekStartDate } from "~/lib/utils";
 import { fetchActiveWeekData, fetchDishList } from "~/server/data-layer";
 import NewDesignComponent from "./new-design";
+import { Suspense } from "react";
 
 export default async function Page(props: {
     searchParams?: Promise<{
@@ -37,10 +38,12 @@ export default async function Page(props: {
     const fetchFromServerActiveWeekData = fetchActiveWeekData(datesOfCurrentWeek);
     const dishList = fetchDishList(dishName);
     return (
-        <NewDesignComponent
-            storedDishList={dishList}
-            storedPlannedWeek={fetchFromServerActiveWeekData}
-            currentWeek={datesOfCurrentWeek}
-        />
+        <Suspense fallback={'Loading dish component'}>
+            <NewDesignComponent
+                storedDishList={dishList}
+                storedPlannedWeek={fetchFromServerActiveWeekData}
+                currentWeek={datesOfCurrentWeek}
+            />
+        </Suspense>
     )
 }

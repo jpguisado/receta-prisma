@@ -55,7 +55,6 @@ export async function fetchActiveWeekData(datesOfTheWeek: Date[]) {
     });
     fetchedDays.map((comida) => comida.plannedMeal.sort((a, b) => MEALS.indexOf(a.meal) - MEALS.indexOf(b.meal)))
     const { success, data, error } = plannedDaySchema.array().safeParse(fetchedDays);
-    console.log(data, error)
     if (!success) throw new Error('Cannot fetch planned meals data.', error);
     return data;
 }
