@@ -4,7 +4,7 @@ import type { DishListType, DishType } from "~/models/types/dish.type";
 import type { PlannedWeekType } from "~/models/types/plannedDay";
 
 import { AppleIcon, ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
-import { Suspense, use, useState, useTransition } from "react";
+import { use, useState, useTransition } from "react";
 import { Input } from "~/components/ui/input";
 import {
     Select,
