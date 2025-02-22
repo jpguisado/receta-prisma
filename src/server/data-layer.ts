@@ -3,7 +3,6 @@ import { dishListSchema } from "~/models/schemas/dish";
 import { db } from "./db";
 import { plannedDaySchema, plannedWeekSchema } from "~/models/schemas/plannedDay";
 import { MEALS } from "~/lib/utils";
-import { plannedMealSchema } from "~/models/schemas/plannedMeal";
 
 export async function fetchActiveWeekData(datesOfTheWeek: Date[]) {
     
@@ -131,7 +130,6 @@ export async function fetchPlannedDays(datesOfTheWeek: Date[]) {
  * @returns the days of the week
  */
 export async function fetchPlannedMealsWellFormated(datesOfTheWeek: Date[]) {
-    const MEALS = ['BREAKFAST', 'MIDMORNING', 'LUNCH', 'SNACK', 'DINNER'];
     const week = await db.plannedDay.findMany({
         include: {
             plannedMeal: {

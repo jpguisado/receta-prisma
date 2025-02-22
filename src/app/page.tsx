@@ -14,7 +14,6 @@ import Link from "next/link";
 
 export default async function HomePage() {
   const todaysMeals = await fetchTodaysMeals();
-  console.log(todaysMeals)
   return (
     <main className="flex flex-col min-h-screen">
       <h1 className="text-3xl font-bold pt-12 p-6">Hoy comemos:</h1>
