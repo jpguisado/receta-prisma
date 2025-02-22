@@ -1,16 +1,39 @@
-// app/providers.jsx
 'use client'
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import {
+  QueryClient,
+  QueryClientProvider,
+  isServer,
+} from '@tanstack/react-query'
+import * as React from 'react'
 
-const queryClient = new QueryClient();
-
-type Props = {
-  children?: React.ReactNode;
+function makeQueryClient() {
+  return new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 60 * 1000,
+      },
+    },
+  })
 }
 
-export default function Providers({ children } :  Props): React.ReactNode {
+let browserQueryClient: QueryClient | undefined = undefined
+
+function getQueryClient() {
+  if (isServer) {
+    return makeQueryClient()
+  } else {
+    if (!browserQueryClient) browserQueryClient = makeQueryClient()
+    return browserQueryClient
+  }
+}
+
+export function Providers(props: { children: React.ReactNode }) {
+  const queryClient = getQueryClient()
+
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+        {props.children}
+    </QueryClientProvider>
   )
 }

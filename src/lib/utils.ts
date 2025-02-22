@@ -1,36 +1,9 @@
-import { type ClassValue, clsx } from "clsx"
+import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { BreakfastIcon } from "~/app/weekly-planner/components/Icons/BreakfastIcon"
-import { DinnerIcon } from "~/app/weekly-planner/components/Icons/DinnerIcon";
-import { LunchIcon } from "~/app/weekly-planner/components/Icons/LunchIcon";
-import { MidmorningIcon } from "~/app/weekly-planner/components/Icons/MidmorningIcon";
-import { SnackIcon } from "~/app/weekly-planner/components/Icons/SnackIcon";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
-
-export const MEALS = [
-  {
-    label: 'BREAKFAST',
-    icon: BreakfastIcon()
-  },{
-    label: 'MIDMORNING',
-    icon: MidmorningIcon(),
-  },{
-    label: 'LUNCH',
-    icon: LunchIcon(),
-  }, {
-    label: 'SNACK',
-    icon: SnackIcon(), 
-  },{
-    label: 'DINNER',
-    icon: DinnerIcon()
-  }
-];
-export const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-export const WEEK_DAYS = ['DO', 'LU', 'MA', 'MI', 'JU','VI','SA'];
 
 /**
  * Gets the number of a week given a date
@@ -43,33 +16,128 @@ export const getWeekNumber = (dateToCompare: Date) => {
   return Math.ceil(((difference) / 86400000 + 1) / 7)
 }
 
+export const MONTHS = [
+  {
+    label: 'January',
+    short: 'Jan'
+  },
+  {
+    label: 'February',
+    short: 'Feb'
+  },
+  {
+    label: 'March',
+    short: 'Mar'
+  },
+  {
+    label: 'April',
+    short: 'Apr'
+  },
+  {
+    label: 'May',
+    short: 'May'
+  },
+  {
+    label: 'June',
+    short: 'Jun'
+  },
+  {
+    label: 'July',
+    short: 'Jul'
+  },
+  {
+    label: 'August',
+    short: 'Aug'
+  },
+  {
+    label: 'September',
+    short: 'Sep'
+  },
+  {
+    label: 'October',
+    short: 'Oct'
+  },
+  {
+    label: 'November',
+    short: 'Nov'
+  },
+  {
+    label: 'December',
+    short: 'Dec'
+  }
+];
+
+export const MEALS = [
+  'BREAKFAST',
+  'MIDMORNING',
+  'LUNCH',
+  'SNACK',
+  'DINNER',
+  'COMPLEMENTARY',
+] as const;
+
+export const MEALS_ICONS = [
+  {
+    label: 'BREAKFAST',
+    icon: ''
+  },{
+    label: 'MIDMORNING',
+    icon: '',
+  },{
+    label: 'LUNCH',
+    icon: '',
+  }, {
+    label: 'SNACK',
+    icon: '', 
+  },{
+    label: 'DINNER',
+    icon: '',
+  },{
+    label: 'COMPLEMENTARY',
+    icon: '',
+  }
+] as const;
+
 /**
- * Given a date, returns the date of sunday or monday
- * @param dateWhereToSearch date that starts the search
- * @param firstDayOfWeek 0 (sunday) or 1 (monday)
- * @returns First day date
- */
-export const findFirstDayOfWeek = (dateWhereToSearch: Date): Date => {
-  const twentyFourHoursInMilis = 86400000;
-  const dayNumber = ((dateWhereToSearch.getDay() + 6) % 7);
-  const daysSinceDayOneInMilis = (dayNumber * twentyFourHoursInMilis);
-  const firstDay = new Date(dateWhereToSearch.getTime() - daysSinceDayOneInMilis);
-  return firstDay;
+* Calculates an array of seven consecutive dates starting from a given date
+* @param startDate The starting date to calculate the week from
+* @returns Array of 7 consecutive dates
+*/
+export const getWeekDates = (startDate: Date): Date[] => {
+  // Constants should be clearly defined
+  const DAYS_IN_WEEK = 7;
+  const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
+  // Input validation
+  if (!(startDate instanceof Date) || isNaN(startDate.getTime())) {
+    throw new Error('Invalid date provided');
+  }
+  // Create a new Date object to avoid mutating the input
+  const firstDate = new Date(startDate.getTime());
+  // Use Array.from for cleaner array generation
+  return Array.from({ length: DAYS_IN_WEEK }, (_, index) => {
+    return new Date(firstDate.getTime() + MILLISECONDS_PER_DAY * index);
+  });
 }
 
 /**
-* Given a date, it returns the next six following dates
-* @param firstDayOfWeek It can be 0 or 1 representing sunday or monday
-* @param firstDateOfWeek It will be the date of the first day of week
-* @returns Array of dates that represents the current week
-*/
-export const calcularLosDiasDeLaSemana = (firstDateOfWeek: Date) : Date[] => {
-  const twentyFourHoursInMilis = 86400000;
-  const weekDates: Date[] = []; // Array donde almacenaremos las fechas
-  for (let dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++) {
-      const dayInMilis = firstDateOfWeek.getTime() + twentyFourHoursInMilis * dayOfWeek;
-      const dateToAdd = new Date(dayInMilis);
-      weekDates.push(dateToAdd);
+ * Finds the Monday of the week containing the given date
+ * @param searchDate The date to find the week's Monday from
+ * @returns Date object representing Monday of the same week
+ * @throws {Error} If the provided date is invalid
+ */
+export const getWeekStartDate = (searchDate: Date): Date => {
+  const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
+  const DAYS_IN_WEEK = 7;
+  // Input validation
+  if (!(searchDate instanceof Date) || isNaN(searchDate.getTime())) {
+    throw new Error('Invalid date provided');
   }
-  return weekDates;
+  // Create a new Date object to avoid mutating the input
+  const inputDate = new Date(searchDate.getTime());
+  // Calculate days since Monday (Monday = 0, Sunday = 6)
+  const daysSinceMonday = (inputDate.getDay() + 6) % DAYS_IN_WEEK;
+  // Calculate milliseconds to subtract to reach Monday
+  const millisecondsToSubtract = daysSinceMonday * MILLISECONDS_PER_DAY;
+  // Return new Date set to Monday
+  return new Date(inputDate.getTime() - millisecondsToSubtract);
 }
