@@ -24,7 +24,7 @@ export default async function Page(props: {
         )
     }
     return (
-        <div className="flex flex-col gap-3 mx-2 py-3">
+        <div className="w-full">
             <UpdateQueryParams param="query" placeholder="Busca el plato" />
             <Suspense fallback={skeleton()}>
                 <DishList dishList={dishList} />

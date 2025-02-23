@@ -19,6 +19,7 @@ export default function UpdateQueryParams({param, placeholder}: {param: string, 
     }
     return (
         <Input
+            className="h-12"
             placeholder={placeholder}
             onChange={(e) => {
                 updateQuery(e.target.value);

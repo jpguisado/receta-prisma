@@ -30,7 +30,7 @@ export default async function HomePage(props: {
   const currentDateInParams = new Date(y, m, d);
   const todaysMeals = await fetchTodaysMeals(currentDateInParams);
   return (
-    <main className="flex flex-col min-h-screen">
+    <main className="">
       <h1 className="text-3xl font-bold pt-12 p-6">Hoy comemos:</h1>
       <div className="px-6 flex flex-col gap-3 pb-12">
       <ActiveWeekControls
