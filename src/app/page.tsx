@@ -1,4 +1,4 @@
-import { ChevronLeftCircle, ChevronRightCircle, ReceiptText } from "lucide-react";
+import { ReceiptText } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
 import { fetchTodaysMeals } from "~/server/data-layer";

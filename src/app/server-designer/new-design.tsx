@@ -20,6 +20,7 @@ import { MEALS } from "~/lib/utils";
 import { updateMealOfDay } from "~/server/plannedWeek";
 import TableSkeleton from "~/components/custom/table-skeleton";
 import ActiveControls from "~/components/custom/active-week-controls";
+import UpdateQueryParams from "~/components/custom/update-query-params";
 export const dynamic = 'force-dynamic';
 const NewDesignComponent = (
     { storedDishList, storedPlannedWeek, currentWeek }: {
@@ -28,9 +29,6 @@ const NewDesignComponent = (
         storedDishList: Promise<DishListType>,
     }
 ) => {
-    const router = useRouter();
-    const params = useSearchParams();
-    const pathname = usePathname();
     const week = use(storedPlannedWeek);
     const dishList = use(storedDishList);
     const [isHovering, setIsHovering] = useState<{ x: number, y: number } | null>();
@@ -54,15 +52,6 @@ const NewDesignComponent = (
             await updateMealOfDay(targetDishId, targetMealId);
         })
     }
-    const filterListOfDishes = (dishName: string) => {
-        const searchParams = new URLSearchParams(params);
-        if (dishName) {
-            searchParams.set('query', dishName);
-        } else {
-            searchParams.delete('query');
-        }
-        router.replace(`${pathname}?${searchParams.toString()}`);
-    }
     return (
         <div className="flex gap-6 h-full">
             <div className="col-span-3 flex flex-col gap-1">
@@ -82,12 +71,9 @@ const NewDesignComponent = (
                         </SelectGroup>
                     </SelectContent>
                 </Select>
-                <Input
-                    placeholder="Introduce texto para filtrar los platos:"
-                    onChange={(e) => {
-                        filterListOfDishes(e.target.value);
-                    }}
-                    defaultValue={params.get('dishName')?.toString()}
+                <UpdateQueryParams
+                    param="query"
+                    placeholder="Busca el plato"
                 />
                 <div className="border-[1px] rounded-[2px] px-4 py-2 text-sm font-medium flex flex-col gap-3 h-full overflow-x-scroll">
                     <div>Dishes:</div>
