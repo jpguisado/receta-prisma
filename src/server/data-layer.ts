@@ -170,7 +170,7 @@ export async function fetchDishList(dishName: string) {
 export async function fetchTodaysMeals(day: Date) {
     return await db.plannedDay.findUnique(({
         where: {
-            day: day ?? new Date()
+            day: day
         },
         include: {
             plannedMeal: {

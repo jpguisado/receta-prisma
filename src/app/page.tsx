@@ -15,9 +15,9 @@ import ActiveWeekControls from "~/components/custom/active-week-controls";
 
 export default async function HomePage(props: {
   searchParams?: Promise<{
-      d?: string;
-      m?: string;
-      y?: string;
+    d?: string;
+    m?: string;
+    y?: string;
   }>;
 }) {
   const searchParams = await props.searchParams;
@@ -27,14 +27,29 @@ export default async function HomePage(props: {
   const d = parseInt(dayInParams);
   const m = parseInt(monthInParams);
   const y = parseInt(yearInParams);
-  const currentDateInParams = new Date(y, m, d);
-  const todaysMeals = await fetchTodaysMeals(currentDateInParams);
+  const checkActiveDate = () => {
+    if (dayInParams && monthInParams && yearInParams) {
+      const d = parseInt(dayInParams);
+      const m = parseInt(monthInParams);
+      const y = parseInt(yearInParams);
+      const currentDateInParams = new Date(y, m, d);
+      return currentDateInParams;
+    } else {
+      const currentYear = new Date().getFullYear();
+      const currentMonth = new Date().getMonth();
+      const currentDay = new Date().getDate();
+      const currentDateInParams = new Date(currentYear, currentMonth, currentDay);
+      return currentDateInParams;
+    }
+  }
+  const currentDate = checkActiveDate();
+  const todaysMeals = await fetchTodaysMeals(currentDate);
   return (
     <main className="">
       <h1 className="text-3xl font-bold pt-12 p-6">Hoy comemos:</h1>
       <div className="px-6 flex flex-col gap-3 pb-12">
-      <ActiveWeekControls
-          isPending={false} 
+        <ActiveWeekControls
+          isPending={false}
           mode="day"
         />
         {
@@ -48,7 +63,7 @@ export default async function HomePage(props: {
                 <CardFooter className="flex justify-end">
                   {meals.dish?.recipe ? (
                     <Drawer>
-                      <DrawerTrigger><Button variant={"outline"}><ReceiptText /></Button></DrawerTrigger>
+                      <DrawerTrigger><ReceiptText /></DrawerTrigger>
                       <DrawerContent>
                         <DrawerHeader>
                           <DrawerTitle>{meals.dish?.name}</DrawerTitle>
