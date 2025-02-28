@@ -3,6 +3,7 @@ import { dishListSchema } from "~/models/schemas/dish";
 import { db } from "./db";
 import { plannedDaySchema, plannedWeekSchema } from "~/models/schemas/plannedDay";
 import { MEALS } from "~/lib/utils";
+import { plannedMealSchema } from "~/models/schemas/plannedMeal";
 
 export async function fetchActiveWeekData(datesOfTheWeek: Date[]) {
     const existingDays = await db.plannedDay.findMany({
@@ -180,6 +181,6 @@ export async function fetchTodaysMeals(day: Date) {
             }
         }
     })).then((day) => {
-        return day?.plannedMeal.sort((a, b) => MEALS.indexOf(a.meal) - MEALS.indexOf(b.meal))
+        return plannedMealSchema.array().safeParse(day?.plannedMeal.sort((a, b) => MEALS.indexOf(a.meal) - MEALS.indexOf(b.meal))).data!
     });
 }

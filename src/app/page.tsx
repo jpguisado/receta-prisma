@@ -12,6 +12,8 @@ import {
 } from "~/components/ui/drawer"
 import Link from "next/link";
 import ActiveWeekControls from "~/components/custom/active-week-controls";
+import MealsResume from "./meals-resume";
+import { Suspense } from "react";
 
 export default async function HomePage(props: {
   searchParams?: Promise<{
@@ -43,7 +45,7 @@ export default async function HomePage(props: {
     }
   }
   const currentDate = checkActiveDate();
-  const todaysMeals = await fetchTodaysMeals(currentDate);
+  const todaysMeals = fetchTodaysMeals(currentDate);
   return (
     <main className="">
       <h1 className="text-3xl font-bold pt-12 p-6">Hoy comemos:</h1>
@@ -52,31 +54,11 @@ export default async function HomePage(props: {
           isPending={false}
           mode="day"
         />
-        {
-          todaysMeals?.map((meals => {
-            return (
-              <Card key={meals.id}>
-                <CardHeader>
-                  <CardTitle>{meals.meal}</CardTitle>
-                  <CardDescription>{meals.dish?.name ? meals.dish?.name : <Link href={'/server-designer'}>Planificar</Link>}</CardDescription>
-                </CardHeader>
-                <CardFooter className="flex justify-end">
-                  {meals.dish?.recipe ? (
-                    <Drawer>
-                      <DrawerTrigger><ReceiptText /></DrawerTrigger>
-                      <DrawerContent>
-                        <DrawerHeader>
-                          <DrawerTitle>{meals.dish?.name}</DrawerTitle>
-                          <DrawerDescription>{meals.dish?.recipe}</DrawerDescription>
-                        </DrawerHeader>
-                      </DrawerContent>
-                    </Drawer>
-                  ) : ''}
-                </CardFooter>
-              </Card>
-            )
-          }))
-        }
+        <Suspense fallback={'Cargando las comidas de hoy'}>
+          <MealsResume
+            todaysMeals={todaysMeals}
+          />
+        </Suspense>
       </div>
     </main>
   );
