@@ -5,7 +5,6 @@ import type { PlannedWeekType } from "~/models/types/plannedDay";
 
 import { AppleIcon } from "lucide-react";
 import { use, useState, useTransition } from "react";
-import { Input } from "~/components/ui/input";
 import {
     Select,
     SelectContent,
@@ -15,7 +14,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from "~/components/ui/select";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MEALS } from "~/lib/utils";
 import { updateMealOfDay } from "~/server/plannedWeek";
 import TableSkeleton from "~/components/custom/table-skeleton";
@@ -54,7 +52,7 @@ const NewDesignComponent = (
     }
     return (
         <div className="flex gap-6 h-full">
-            <div className="col-span-3 flex flex-col gap-1">
+            <div className="col-span-3 flex flex-col gap-1 min-w-96">
                 <Select>
                     <SelectTrigger className="w-full">
                         <SelectValue placeholder="Selecciona una categoría" />
@@ -90,7 +88,7 @@ const NewDesignComponent = (
                 </div>
             </div>
             <div className="col-span-9 gap-3 flex flex-col h-full w-full">
-                <div className="grid grid-cols-[200px_,_repeat(7,minmax(0,_1fr))] gap-x-3 gap-y-1 text-center h-full grid-rows-[3rem]">
+                <div className="grid grid-cols-[200px_,_repeat(7,minmax(100px,_1fr))] gap-x-3 gap-y-1 text-center h-full grid-rows-[3rem]">
                     {/* Days of the week */}
                     <ActiveControls
                         mode="week"
@@ -106,7 +104,7 @@ const NewDesignComponent = (
                     </div>
                     {week.map((day, dayIndex) => {
                         return (
-                            <div key={day.id} className="grid gap-1 h-full items-center">
+                            <div key={day.id} className="grid w-full gap-1 h-full items-center">
                                 {day.plannedMeal.map((mealsOfADay, mealIndex) => {
                                     return (
                                         <div key={mealsOfADay.id}

@@ -53,7 +53,7 @@ export default function RootLayout({
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
-          <div className="p-3">
+          <div className="p-3 w-full">
             {children}
           </div>
         </body>
