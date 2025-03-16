@@ -5,11 +5,9 @@ import { type Metadata } from "next";
 import { Providers } from "./providers";
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
 } from "~/components/ui/navigation-menu"
 import Link from "next/link";
 import { navigationMenuTriggerStyle } from "~/components/ui/navigation-menu"

@@ -35,7 +35,7 @@ export default function DishForm({ dishPromise }: { dishPromise: Promise<DishTyp
         },
     })
     const { control, handleSubmit, reset } = form;
-    const { fields, append, remove, move } = useFieldArray({
+    const { fields } = useFieldArray({
         control,
         name: "ingredientList",
         keyName: 'key'

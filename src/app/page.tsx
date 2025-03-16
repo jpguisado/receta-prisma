@@ -1,16 +1,4 @@
-import { ReceiptText } from "lucide-react";
-import { Button } from "~/components/ui/button";
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
 import { fetchTodaysMeals } from "~/server/data-layer";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "~/components/ui/drawer"
-import Link from "next/link";
 import ActiveWeekControls from "~/components/custom/active-week-controls";
 import MealsResume from "./meals-resume";
 import { Suspense } from "react";
@@ -26,9 +14,6 @@ export default async function HomePage(props: {
   const dayInParams = searchParams?.d ?? '';
   const monthInParams = searchParams?.m ?? '';
   const yearInParams = searchParams?.y ?? '';
-  const d = parseInt(dayInParams);
-  const m = parseInt(monthInParams);
-  const y = parseInt(yearInParams);
   const checkActiveDate = () => {
     if (dayInParams && monthInParams && yearInParams) {
       const d = parseInt(dayInParams);

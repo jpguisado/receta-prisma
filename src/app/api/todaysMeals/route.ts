@@ -3,7 +3,7 @@
 import { MEALS } from "~/lib/utils";
 import { db } from "~/server/db"
 
-export async function GET(request: Request) {
+export async function GET() {
     return await db.plannedDay.findUnique(({
         where: {
             day: new Date(),

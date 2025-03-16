@@ -1,9 +1,7 @@
 'use client'
 import { use } from "react";
 import type { DishListType } from "~/models/types/dish.type";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
 import Link from "next/link";
-import { CookingPotIcon, LucideEdit3, ReceiptText } from "lucide-react";
 import {
     Table,
     TableBody,

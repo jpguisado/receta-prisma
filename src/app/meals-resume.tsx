@@ -20,7 +20,7 @@ export default function MealsResume({ todaysMeals }: { todaysMeals: Promise<Plan
         return <Card key={meal.id}>
             <CardHeader>
                 <CardTitle>{meal.meal}</CardTitle>
-                <CardDescription>{meal.dish?.name ? meal.dish?.name : <Link href={'/server-designer'}>Planificar</Link>}</CardDescription>
+                <CardDescription>{meal.dish?.name ?? <Link href={'/server-designer'}>Planificar</Link>}</CardDescription>
             </CardHeader>
             <CardFooter className="flex justify-end">
                 {meal.dish?.recipe ? (
