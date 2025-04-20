@@ -1,7 +1,8 @@
-import { fetchTodaysMeals } from "~/server/data-layer";
-import ActiveWeekControls from "~/components/custom/active-week-controls";
-import MealsResume from "./meals-resume";
 import { Suspense } from "react";
+import ActiveWeekControls from "~/components/custom/active-week-controls";
+import { MONTHS } from "~/lib/utils";
+import { fetchTodaysMeals } from "~/server/data-layer";
+import MealsResume from "./meals-resume";
 
 export default async function HomePage(props: {
   searchParams?: Promise<{
@@ -11,9 +12,9 @@ export default async function HomePage(props: {
   }>;
 }) {
   const searchParams = await props.searchParams;
-  const dayInParams = searchParams?.d ?? '';
-  const monthInParams = searchParams?.m ?? '';
-  const yearInParams = searchParams?.y ?? '';
+  const dayInParams = searchParams?.d ?? "";
+  const monthInParams = searchParams?.m ?? "";
+  const yearInParams = searchParams?.y ?? "";
   const checkActiveDate = () => {
     if (dayInParams && monthInParams && yearInParams) {
       const d = parseInt(dayInParams);
@@ -25,24 +26,26 @@ export default async function HomePage(props: {
       const currentYear = new Date().getFullYear();
       const currentMonth = new Date().getMonth();
       const currentDay = new Date().getDate();
-      const currentDateInParams = new Date(currentYear, currentMonth, currentDay);
+      const currentDateInParams = new Date(
+        currentYear,
+        currentMonth,
+        currentDay,
+      );
       return currentDateInParams;
     }
-  }
+  };
   const currentDate = checkActiveDate();
   const todaysMeals = fetchTodaysMeals(currentDate);
   return (
     <main className="">
-      <h1 className="text-3xl font-bold pt-12 p-6">Hoy comemos:</h1>
-      <div className="px-6 flex flex-col gap-3 pb-12">
-        <ActiveWeekControls
-          isPending={false}
-          mode="day"
-        />
-        <Suspense fallback={'Cargando las comidas de hoy'}>
-          <MealsResume
-            todaysMeals={todaysMeals}
-          />
+      <h1 className="p-6 pt-12 text-3xl font-bold">
+        Hoy es día {currentDate.getDate()} de{" "}
+        {MONTHS[currentDate.getMonth()]?.label}
+      </h1>
+      <div className="flex flex-col gap-3 px-6 pb-12">
+        <ActiveWeekControls isPending={false} mode="day" />
+        <Suspense fallback={"Cargando las comidas de hoy"}>
+          <MealsResume todaysMeals={todaysMeals} />
         </Suspense>
       </div>
     </main>
